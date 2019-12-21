@@ -1,6 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import CreateAccount from '../views/CreateAccount.vue'
+import Login from '../views/Login.vue'
+import SelectCharacter from '../views/SelectCharacter.vue'
+import CreateCharacter from '../views/CreateCharacter.vue'
+import Town from '../views/Town.vue'
+import Npc from '../views/Npc.vue'
 
 Vue.use(VueRouter)
 
@@ -9,6 +15,36 @@ const routes = [
     path: '/',
     name: 'home',
     component: Home
+  },
+  {
+    path: '/create-account',
+    name: 'create-account',
+    component: CreateAccount
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login
+  },
+  {
+    path: '/select-character',
+    name: 'select-character',
+    component: SelectCharacter
+  },
+  {
+    path: '/create-character',
+    name: 'create-character',
+    component: CreateCharacter
+  },
+  {
+    path: '/town',
+    name: 'town',
+    component: Town
+  },
+  {
+    path: '/npc',
+    name: 'npc',
+    component: Npc
   },
   {
     path: '/about',
