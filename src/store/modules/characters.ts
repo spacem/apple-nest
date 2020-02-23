@@ -5,13 +5,17 @@ import { Character } from '@/types/character'
 
 // initial state
 const state: CharactersState = {
-    characters: []
+    characters: [],
+    selectedCharacter: undefined
 }
 
 // getters
 const getters: GetterTree<CharactersState, RootState> = {
     characters: (state) => {
         return state.characters;
+    },
+    selectedCharacter: (state) => {
+        return state.selectedCharacter;
     }
 }
 
@@ -19,6 +23,9 @@ const getters: GetterTree<CharactersState, RootState> = {
 const actions: ActionTree<CharactersState, RootState> = {
     create({ commit }, character: Character) {
         commit('create', character)
+    },
+    select({ commit }, character: Character) {
+        commit('select', character)
     }
 }
 
@@ -26,6 +33,9 @@ const actions: ActionTree<CharactersState, RootState> = {
 const mutations: MutationTree<CharactersState> = {
     create(state, character: Character) {
         state.characters.push(character)
+    },
+    select(state, character: Character) {
+        state.selectedCharacter = character;
     }
 }
 
