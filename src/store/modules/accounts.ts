@@ -1,31 +1,32 @@
 import { ActionTree, MutationTree, GetterTree, ModuleTree, Module } from 'vuex'
 import { RootState } from '@/types/root'
-import { AccountState } from '@/types/account-state'
+import { AccountsState } from '@/types/accounts-state'
+import { Account } from '@/types/account'
 
 // initial state
-const state: AccountState = {
+const state: AccountsState = {
     accounts: []
 }
 
 // getters
-const getters: GetterTree<AccountState, RootState> = {
+const getters: GetterTree<AccountsState, RootState> = {
 }
 
 // actions
-const actions: ActionTree<AccountState, RootState> = {
-    getAll({ commit }) {
-        commit('setProducts', [])
+const actions: ActionTree<AccountsState, RootState> = {
+    addAccount({ commit }, account: Account) {
+        commit('addAccount', account)
     }
 }
 
 // mutations
-const mutations: MutationTree<AccountState> = {
-    setAccounts(state, accounts) {
-        state.accounts = accounts
+const mutations: MutationTree<AccountsState> = {
+    addAccount(state, account) {
+        state.accounts.push(account)
     }
 }
 
-export const Accounts: Module<AccountState, RootState> = {
+export const accounts: Module<AccountsState, RootState> = {
     namespaced: true,
     state,
     getters,
