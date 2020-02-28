@@ -11,6 +11,7 @@ import Farm from "../views/Farm.vue";
 import Plot from "../views/Plot.vue";
 import Farmer from "../views/Farmer.vue";
 import EventPlanner from "../views/EventPlanner.vue";
+import Storage from "../views/Storage.vue";
 
 Vue.use(VueRouter);
 
@@ -54,6 +55,11 @@ const routes = [
     path: "/event-planner",
     name: "EventPlanner",
     component: EventPlanner
+  },
+  {
+    path: "/storage",
+    name: "Storage",
+    component: Storage
   },
   {
     path: "/farm",

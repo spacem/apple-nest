@@ -7,6 +7,8 @@
     |
     <router-link to="/blacksmith">Blacksmith</router-link>
     |
+    <router-link to="/storage">Storage</router-link>
+    |
     <router-link to="/farm">Farm</router-link>
   </div>
 </template>

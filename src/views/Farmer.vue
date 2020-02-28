@@ -2,7 +2,7 @@
   <div>
     <h1>Farmer NPC</h1>
     <div>
-      Hello I am the farmer. If you had gold you could buy seeds from me.
+      Hello I am the farmer. If you had money you could buy seeds from me.
     </div>
     <div>
       {{ message }}

@@ -7,6 +7,7 @@ const REWARD_TIME = 60 * 60;
 
 // initial state
 const state: CharactersState = {
+  storage: 0,
   characters: [],
   selectedCharacter: undefined
 };
@@ -18,6 +19,9 @@ const getters: GetterTree<CharactersState, RootState> = {
   },
   selectedCharacter: state => {
     return state.selectedCharacter;
+  },
+  storage: state => {
+    return state.storage;
   }
 };
 
@@ -43,6 +47,12 @@ const actions: ActionTree<CharactersState, RootState> = {
   },
   sellApple({ commit }) {
     commit("sellApple");
+  },
+  storeMoney({ commit }) {
+    commit("storeMoney");
+  },
+  takeMoney({ commit }) {
+    commit("takeMoney");
   }
 };
 
@@ -120,6 +130,21 @@ const mutations: MutationTree<CharactersState> = {
       }
     } else {
       throw new Error(`No character selected`);
+    }
+  },
+  storeMoney(state) {
+    if (state.selectedCharacter) {
+      if (!state.storage) {
+        state.storage = 0;
+      }
+      state.storage += state.selectedCharacter.bag.money;
+      state.selectedCharacter.bag.money = 0;
+    }
+  },
+  takeMoney(state) {
+    if (state.selectedCharacter) {
+      state.selectedCharacter.bag.money += state.storage;
+      state.storage = 0;
     }
   }
 };
