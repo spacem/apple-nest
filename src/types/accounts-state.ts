@@ -1,3 +1,3 @@
 export interface AccountsState {
-    accounts: Account[];
+  accounts: Account[];
 }

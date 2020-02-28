@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <h1>
-    <HelloWorld msg="Apple Nest"/>
+      <HelloWorld msg="Apple Nest" />
     </h1>
     <router-link to="/login">Login</router-link> |
     <router-link to="/create-account">Create Account</router-link>
@@ -10,12 +10,12 @@
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import HelloWorld from "@/components/HelloWorld.vue";
 
 export default {
-  name: 'home',
+  name: "home",
   components: {
     HelloWorld
   }
-}
+};
 </script>

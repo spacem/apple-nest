@@ -1,12 +1,20 @@
 <template>
   <div id="app">
-    <router-view/>
+    <div v-if="selectedCharacter">
+      Using character: {{ selectedCharacter.name }}
+      <div v-if="selectedCharacter.bag">
+        Money: {{ selectedCharacter.bag.money }} | Seeds:
+        {{ selectedCharacter.bag.seeds }} | Apples:
+        {{ selectedCharacter.bag.apples }}
+      </div>
+    </div>
+    <router-view />
   </div>
 </template>
 
 <style lang="scss">
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -26,3 +34,12 @@
   }
 }
 </style>
+<script>
+import { mapGetters, mapActions } from "vuex";
+
+export default {
+  computed: {
+    ...mapGetters("characters", ["selectedCharacter"])
+  }
+};
+</script>

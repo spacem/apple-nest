@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h1>Blacksmith NPC</h1>
+    <h1>Event Planner NPC</h1>
     <div>
-      Hello I am the blacksmith. I can not craft anything for you yet but if you
-      grow apples I will buy them.
+      Hello I am the event planner. We have a login event. I will give you free
+      money every day!
     </div>
     <div>
       {{ message }}
@@ -12,7 +12,7 @@
       <button @click="talk()">Talk</button>
     </div>
     <div>
-      <button @click="tryToSellApple()">Sell an Apple</button>
+      <button @click="collectReward()">Collect Reward</button>
     </div>
     <router-link to="/town">Town</router-link>
   </div>
@@ -30,20 +30,20 @@ export default {
     };
   },
   methods: {
-    ...mapActions("characters", ["sellApple"]),
-    tryToSellApple() {
+    ...mapActions("characters", ["collectEventReward"]),
+    collectReward() {
       try {
-        this.sellApple();
-        this.message = "Spend it wisely";
+        this.collectEventReward();
+        this.message = "Hope you enjoyed the event";
       } catch (err) {
         this.message = err.message;
       }
     },
     talk(character) {
-      if (this.message === "Do you like apples? I do.") {
-        this.message = "I am done talking - go farm me some apples.";
+      if (this.message === "Do you like rewards? I do.") {
+        this.message = "If you need more money you should sell some apples.";
       } else {
-        this.message = "Do you like apples? I do.";
+        this.message = "Do you like rewards? I do.";
       }
     }
   }

@@ -1,6 +1,6 @@
-import { Character } from './character';
+import { Character } from "./character";
 
 export interface CharactersState {
-    characters: Character[];
-    selectedCharacter?: Character;
+  characters: Character[];
+  selectedCharacter?: Character;
 }

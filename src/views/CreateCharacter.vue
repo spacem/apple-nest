@@ -9,22 +9,22 @@
   </div>
 </template>
 <script>
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import { mapActions } from 'vuex';
-import router from '../router';
+import { Component, Prop, Vue } from "vue-property-decorator";
+import { mapActions } from "vuex";
+import router from "../router";
 
 export default {
   data: () => {
     return {
-      characterName: ''
+      characterName: ""
     };
   },
   methods: {
-    ...mapActions('characters', ['create']),
+    ...mapActions("characters", ["create"]),
     doCreate(name) {
       this.create({ name: name });
-      router.push('/select-character');
+      router.push("/select-character");
     }
-  },
-}
+  }
+};
 </script>

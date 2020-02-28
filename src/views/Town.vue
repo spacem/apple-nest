@@ -1,24 +1,21 @@
 <template>
   <div>
-      <h1>Town</h1>
-      <div>
-        Using character: {{ selectedCharacter.name }}
-        |
-        <router-link to="/select-character">Switch Character</router-link>
-      </div>
-      <router-link to="/blacksmith">Blacksmith</router-link>
-      |
-      <router-link to="/farm">Farm</router-link>
+    <h1>Town</h1>
+    <router-link to="/select-character">Switch Character</router-link>
+    |
+    <router-link to="/event-planner">Event Planner</router-link>
+    |
+    <router-link to="/blacksmith">Blacksmith</router-link>
+    |
+    <router-link to="/farm">Farm</router-link>
   </div>
 </template>
 <script>
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import { mapGetters, mapActions } from 'vuex';
-import router from '../router';
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   computed: {
-    ...mapGetters('characters', ['selectedCharacter']),
+    ...mapGetters("characters", ["selectedCharacter"])
   }
-}
+};
 </script>

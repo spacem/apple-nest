@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Create Account</h1>    
+    <h1>Create Account</h1>
     <div>
       <input placeholder="Account Name" />
     </div>
