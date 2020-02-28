@@ -6,7 +6,10 @@ import Login from '../views/Login.vue'
 import SelectCharacter from '../views/SelectCharacter.vue'
 import CreateCharacter from '../views/CreateCharacter.vue'
 import Town from '../views/Town.vue'
-import Npc from '../views/Npc.vue'
+import Blacksmith from '../views/Blacksmith.vue'
+import Farm from '../views/Farm.vue'
+import Plot from '../views/Plot.vue'
+import Farmer from '../views/Farmer.vue'
 
 Vue.use(VueRouter)
 
@@ -42,9 +45,24 @@ const routes = [
     component: Town
   },
   {
-    path: '/npc',
-    name: 'npc',
-    component: Npc
+    path: '/blacksmith',
+    name: 'Blacksmith',
+    component: Blacksmith
+  },
+  {
+    path: '/farm',
+    name: 'farm',
+    component: Farm
+  },
+  {
+    path: '/farmer',
+    name: 'farmer',
+    component: Farmer
+  },
+  {
+    path: '/plot',
+    name: 'plot',
+    component: Plot
   },
   {
     path: '/about',

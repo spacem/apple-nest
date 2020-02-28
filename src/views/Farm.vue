@@ -1,14 +1,11 @@
 <template>
   <div>
-      <h1>Town</h1>
-      <div>
-        Using character: {{ selectedCharacter.name }}
-        |
-        <router-link to="/select-character">Switch Character</router-link>
-      </div>
-      <router-link to="/blacksmith">Blacksmith</router-link>
+      <h1>Farm</h1>
+      <router-link to="/farmer">Farmer</router-link>
       |
-      <router-link to="/farm">Farm</router-link>
+      <router-link to="/plot">Plot</router-link>
+      |
+      <router-link to="/town">Town</router-link>
   </div>
 </template>
 <script>
