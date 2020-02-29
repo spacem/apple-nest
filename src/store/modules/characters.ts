@@ -4,6 +4,8 @@ import { CharactersState } from "@/types/characters-state";
 import { Character } from "@/types/character";
 
 const REWARD_TIME = 60 * 60;
+const WEAPON_COST = 50;
+const WEAPON_UPGRADE_FACTOR = 50;
 
 // initial state
 const state: CharactersState = {
@@ -53,6 +55,12 @@ const actions: ActionTree<CharactersState, RootState> = {
   },
   takeMoney({ commit }) {
     commit("takeMoney");
+  },
+  makeWeapon({ commit }) {
+    commit("makeWeapon");
+  },
+  upgradeWeapon({ commit }) {
+    commit("upgradeWeapon");
   }
 };
 
@@ -75,15 +83,14 @@ const mutations: MutationTree<CharactersState> = {
         remainingTime =
           REWARD_TIME -
           (new Date().valueOf() - state.selectedCharacter.lastRewardDate) /
-            1000;
+          1000;
       }
       if (remainingTime <= 0) {
         state.selectedCharacter.lastRewardDate = new Date().valueOf();
         state.selectedCharacter.bag.money += 1;
       } else {
         throw new Error(
-          `${Math.ceil(remainingTime) /
-            60} minutes left until you can get another event reward`
+          `${Math.ceil(remainingTime / 60)} minutes left until you can get another event reward`
         );
       }
     } else {
@@ -146,6 +153,33 @@ const mutations: MutationTree<CharactersState> = {
       state.selectedCharacter.bag.money += state.storage;
       state.storage = 0;
     }
+  },
+  makeWeapon(state) {
+    if (state.selectedCharacter &&
+      !state.selectedCharacter.weaponLevel &&
+      state.selectedCharacter.bag.money > WEAPON_COST) {
+
+      state.selectedCharacter.weaponLevel = 1;
+      state.selectedCharacter.bag.money -= WEAPON_COST;
+    } else {
+      throw new Error('You do not have enough money. Come back when you have ' + WEAPON_COST);
+    }
+  },
+  upgradeWeapon(state) {
+    if (state.selectedCharacter && state.selectedCharacter.weaponLevel) {
+      const requiredMoney = Math.floor(WEAPON_COST * 0.5 * state.selectedCharacter.weaponLevel);
+      if (state.selectedCharacter.bag.money > requiredMoney) {
+        state.selectedCharacter.bag.money -= requiredMoney;
+        const roll = Math.random();
+        if (roll > 0.30) {
+          state.selectedCharacter.weaponLevel++;
+        } else if (roll < 0.10) {
+          state.selectedCharacter.weaponLevel--;
+        }
+      } else {
+        throw new Error('Upgrading is not cheap you know. Come back when you have ' + requiredMoney);
+      }
+    }
   }
 };
 
@@ -153,8 +187,7 @@ function initBag(character: Character) {
   character.bag = {
     apples: 0,
     money: 0,
-    seeds: 0,
-    weaponLevel: 0
+    seeds: 0
   };
 }
 

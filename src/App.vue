@@ -7,6 +7,9 @@
         {{ selectedCharacter.bag.seeds }} | Apples:
         {{ selectedCharacter.bag.apples }}
       </div>
+      <div v-if="selectedCharacter.weaponLevel">
+        Weapon Level: {{ selectedCharacter.weaponLevel }}
+      </div>
     </div>
     <router-view />
   </div>

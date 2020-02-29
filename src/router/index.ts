@@ -7,6 +7,7 @@ import SelectCharacter from "../views/SelectCharacter.vue";
 import CreateCharacter from "../views/CreateCharacter.vue";
 import Town from "../views/Town.vue";
 import Blacksmith from "../views/Blacksmith.vue";
+import Appleosouras from "../views/Appleosouras.vue";
 import Farm from "../views/Farm.vue";
 import Plot from "../views/Plot.vue";
 import Farmer from "../views/Farmer.vue";
@@ -50,6 +51,11 @@ const routes = [
     path: "/blacksmith",
     name: "Blacksmith",
     component: Blacksmith
+  },
+  {
+    path: "/appleosouras",
+    name: "Appleosouras",
+    component: Appleosouras
   },
   {
     path: "/event-planner",

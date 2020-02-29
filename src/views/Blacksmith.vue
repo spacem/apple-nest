@@ -2,8 +2,9 @@
   <div>
     <h1>Blacksmith NPC</h1>
     <div>
-      Hello I am the blacksmith. I can not craft anything for you yet but if you
-      grow apples I will buy them.
+      Hello I am the blacksmith.
+      I can make weapons and enhance them.
+      For a fee.
     </div>
     <div>
       {{ message }}
@@ -11,8 +12,11 @@
     <div>
       <button @click="talk()">Talk</button>
     </div>
-    <div>
-      <button @click="tryToSellApple()">Sell an Apple</button>
+    <div v-if="selectedCharacter && !selectedCharacter.weaponLevel">
+      <button @click="tryMakeWeapon()">Make a weapon</button>
+    </div>
+    <div v-if="selectedCharacter && selectedCharacter.weaponLevel > 0">
+      <button @click="tryUpgradeWeapon()">Upgrade your weapon</button>
     </div>
     <router-link to="/town">Town</router-link>
   </div>
@@ -29,21 +33,39 @@ export default {
       message: ""
     };
   },
+  computed: {
+    ...mapGetters("characters", ["selectedCharacter"])
+  },
   methods: {
-    ...mapActions("characters", ["sellApple"]),
-    tryToSellApple() {
+    ...mapActions("characters", ["makeWeapon", "upgradeWeapon"]),
+    tryMakeWeapon() {
       try {
-        this.sellApple();
-        this.message = "Spend it wisely";
-      } catch (err) {
+        this.makeWeapon();
+        this.message = "Here you go... This weapon might be useful in the future.";
+      } catch(err) {
+        this.message = err.message;
+      }
+    },
+    tryUpgradeWeapon() {
+      try {
+        const previousLevel = this.selectedCharacter.weaponLevel;
+        this.upgradeWeapon();
+        if(this.selectedCharacter.weaponLevel > previousLevel) {
+          this.message = "You are getting stronger.";
+        } else if(this.selectedCharacter.weaponLevel < previousLevel) {
+          this.message = "Sorry... Your weapon actually got weaker. That was very unlucky.";
+        } else {
+          this.message = "Wow unlucky. Nothing happened. Sorry, no refunds. Better luck next time.";
+        }
+      } catch(err) {
         this.message = err.message;
       }
     },
     talk(character) {
-      if (this.message === "Do you like apples? I do.") {
-        this.message = "I am done talking - go farm me some apples.";
+      if (this.message === "Do you like weapons? I do.") {
+        this.message = "In the future I will be able to make you a weapon.";
       } else {
-        this.message = "Do you like apples? I do.";
+        this.message = "Do you like weapons? I do.";
       }
     }
   }
