@@ -2,7 +2,11 @@
   <div>
     <h1>Create Character</h1>
     <div>
-      <input v-model="characterName" placeholder="Character Name" />
+      <input
+        v-model="characterName"
+        placeholder="Character Name"
+        v-on:keyup.enter="doCreate(characterName)"
+      />
       <button @click="doCreate(characterName)">Create Character</button>
     </div>
     <router-link to="/select-character">Cancel</router-link>

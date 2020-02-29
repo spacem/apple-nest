@@ -11,12 +11,12 @@
       >
         <button @click="tryHarvest()" v-if="seedReady()">Harvest Plant</button>
         <span v-else>
-          <span v-if="getTime() > 1">
-            {{ getTime() }} minutes left until ready for harvest
-          </span>
-          <span v-else>
-            {{ getSeconds() }} seconds left until ready for harvest
-          </span>
+          <span v-if="getTime() > 1"
+            >{{ getTime() }} minutes left until ready for harvest</span
+          >
+          <span v-else
+            >{{ getSeconds() }} seconds left until ready for harvest</span
+          >
         </span>
       </div>
       <div v-else>
@@ -56,7 +56,9 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   data: () => {
     return {
-      message: ""
+      message: "",
+      growSeconds: undefined,
+      intervalId: undefined
     };
   },
   computed: {
@@ -64,14 +66,11 @@ export default {
   },
   methods: {
     ...mapActions("characters", ["harvest", "plantSeed", "plantMegaSeed"]),
-    getGrowSeconds() {
-      return (this.growReadyDate - new Date().valueOf()) / 1000;
-    },
     getTime() {
-      return Math.ceil(this.getGrowSeconds() / 60);
+      return Math.ceil(this.growSeconds / 60);
     },
     getSeconds() {
-      return Math.ceil(this.getGrowSeconds());
+      return Math.ceil(this.growSeconds);
     },
     seedReady() {
       return this.getTime() <= 0;
@@ -79,23 +78,59 @@ export default {
     tryPlantSeed() {
       this.plantSeed();
       this.message = "Now you just have to wait.. it won't take long!";
+      this.maybeStartTimer();
     },
     tryPlantMegaSeed() {
       this.plantMegaSeed();
       this.message = "Now you just have to wait.. a long time...";
+      this.maybeStartTimer();
     },
     tryHarvest() {
-      const before = this.selectedCharacter.bag.apples;
-      this.harvest();
-      const num = this.selectedCharacter.bag.apples - before;
-      if (num === 1) {
-        this.message = "Only a single apple from that tree";
-      } else if (num === 100) {
-        this.message = `Wow that tree gave ${num} apples`;
-      } else {
-        this.message = `That tree gave ${num} apples`;
+      try {
+        const before = this.selectedCharacter.bag.apples;
+        this.harvest();
+        const num = this.selectedCharacter.bag.apples - before;
+        if (num === 1) {
+          this.message = "Only a single apple from that tree";
+        } else if (num === 100) {
+          this.message = `Wow that tree gave ${num} apples`;
+        } else {
+          this.message = `That tree gave ${num} apples`;
+        }
+      } catch (err) {
+        this.message = err.message;
+      }
+    },
+    setGrowSeconds() {
+      try {
+        this.growSeconds = (this.growReadyDate - new Date().valueOf()) / 1000;
+      } catch (err) {
+        this.message = err.message;
+        this.growSeconds = undefined;
+      }
+    },
+    maybeStartTimer() {
+      this.setGrowSeconds();
+      if (this.growSeconds > 0) {
+        setInterval(() => {
+          this.setGrowSeconds();
+          if (!this.growSeconds) {
+            this.stopAnyTimer();
+          }
+        }, 1000);
+      }
+    },
+    stopAnyTimer() {
+      if (this.intervalId) {
+        clearInterval(this.intervalId);
       }
     }
+  },
+  created: function() {
+    this.maybeStartTimer();
+  },
+  destroyed: function() {
+    this.stopAnyTimer();
   }
 };
 </script>

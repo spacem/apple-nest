@@ -4,10 +4,16 @@
       <div v-if="selectedCharacter">
         Using character: {{ selectedCharacter.name }}
         <div v-if="selectedCharacter.bag">
-          Money: {{ selectedCharacter.bag.money }} | Seeds:
-          {{ selectedCharacter.bag.seeds }} | Mega Seeds:
-          {{ selectedCharacter.bag.megaSeeds }} | Apples:
-          {{ selectedCharacter.bag.apples }}
+          Money: {{ selectedCharacter.bag.money }}
+          <span v-if="selectedCharacter.bag.seeds">
+            | Seeds: {{ selectedCharacter.bag.seeds }}</span
+          >
+          <span v-if="selectedCharacter.bag.megaSeeds">
+            | Mega Seeds: {{ selectedCharacter.bag.megaSeeds }}</span
+          >
+          <span v-if="selectedCharacter.bag.apples">
+            | Apples: {{ selectedCharacter.bag.apples }}</span
+          >
         </div>
         <div v-if="selectedCharacter.weaponLevel">
           Weapon Level: {{ selectedCharacter.weaponLevel }}
@@ -25,8 +31,20 @@
   text-align: center;
   color: #2c3e50;
   .game {
+    border: solid grey;
+    border-top-left-radius: 100px;
+    border-top-right-radius: 100px;
+    padding: 40px;
     display: inline-block;
     width: 600px;
+    background: rgb(0, 0, 0);
+    background: linear-gradient(
+      354deg,
+      rgba(0, 0, 0, 1) 1%,
+      rgba(66, 77, 24, 1) 35%,
+      rgba(215, 222, 223, 1) 100%
+    );
+    height: 100vw;
   }
 }
 

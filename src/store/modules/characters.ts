@@ -61,8 +61,12 @@ const actions: ActionTree<CharactersState, RootState> = {
   buyMegaSeed({ commit }) {
     commit("buyMegaSeed");
   },
-  harvest({ commit }) {
-    commit("harvest");
+  harvest({ commit, getters }) {
+    if (getters.growReadyDate < new Date().valueOf()) {
+      commit("harvest");
+    } else {
+      throw new Error("Cannot harvest - not ready yet");
+    }
   },
   plantSeed({ commit }) {
     commit("plantSeed");
