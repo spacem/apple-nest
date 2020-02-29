@@ -1,21 +1,22 @@
 <template>
   <div id="app">
-    <div v-if="selectedCharacter">
-      Using character: {{ selectedCharacter.name }}
-      <div v-if="selectedCharacter.bag">
-        Money: {{ selectedCharacter.bag.money }} | Seeds:
-        {{ selectedCharacter.bag.seeds }} | Mega Seeds:
-        {{ selectedCharacter.bag.megaSeeds }} | Apples:
-        {{ selectedCharacter.bag.apples }}
+    <div class="game">
+      <div v-if="selectedCharacter">
+        Using character: {{ selectedCharacter.name }}
+        <div v-if="selectedCharacter.bag">
+          Money: {{ selectedCharacter.bag.money }} | Seeds:
+          {{ selectedCharacter.bag.seeds }} | Mega Seeds:
+          {{ selectedCharacter.bag.megaSeeds }} | Apples:
+          {{ selectedCharacter.bag.apples }}
+        </div>
+        <div v-if="selectedCharacter.weaponLevel">
+          Weapon Level: {{ selectedCharacter.weaponLevel }}
+        </div>
       </div>
-      <div v-if="selectedCharacter.weaponLevel">
-        Weapon Level: {{ selectedCharacter.weaponLevel }}
-      </div>
+      <router-view />
     </div>
-    <router-view />
   </div>
 </template>
-
 <style lang="scss">
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
@@ -23,6 +24,10 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  .game {
+    display: inline-block;
+    width: 600px;
+  }
 }
 
 #nav {
@@ -36,6 +41,41 @@
       color: #42b983;
     }
   }
+}
+.blacksmith {
+  background-image: url("~@/assets/Blacksmith.jpg");
+}
+.appleosouras {
+  background-image: url("~@/assets/Appleosouras.jpg");
+}
+.farmer {
+  background-image: url("~@/assets/Farmer.jpg");
+}
+.image {
+  width: 100%;
+  height: 350px;
+  background-position: top;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.message {
+  height: 50px;
+}
+.messages {
+  background-color: burlywood;
+  padding: 10px;
+  padding-left: 20px;
+  border: 2px solid;
+  border-radius: 50px;
+  margin-left: 55%;
+  margin-top: -20px;
+  text-align: left;
+  float: right;
+}
+.actions {
+  text-align: right;
+  white-space: nowrap;
+  margin: 10px;
 }
 </style>
 <script>

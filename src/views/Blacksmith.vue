@@ -1,21 +1,27 @@
 <template>
   <div>
     <h1>Blacksmith NPC</h1>
-    <div>
-      Hello I am the blacksmith. I can make weapons and enhance them. For a fee.
+    <div class="messages">
+      <div class="message">
+        {{ message }}
+      </div>
+      <div class="actions">
+        <button @click="talk()">Talk</button>
+        <button
+          @click="tryMakeWeapon()"
+          v-if="selectedCharacter && !selectedCharacter.weaponLevel"
+        >
+          Make a weapon
+        </button>
+        <button
+          @click="tryUpgradeWeapon()"
+          v-if="selectedCharacter && selectedCharacter.weaponLevel > 0"
+        >
+          Upgrade your weapon
+        </button>
+      </div>
     </div>
-    <div>
-      {{ message }}
-    </div>
-    <div>
-      <button @click="talk()">Talk</button>
-    </div>
-    <div v-if="selectedCharacter && !selectedCharacter.weaponLevel">
-      <button @click="tryMakeWeapon()">Make a weapon</button>
-    </div>
-    <div v-if="selectedCharacter && selectedCharacter.weaponLevel > 0">
-      <button @click="tryUpgradeWeapon()">Upgrade your weapon</button>
-    </div>
+    <div class="image blacksmith"></div>
     <router-link to="/town">Town</router-link>
   </div>
 </template>
@@ -28,7 +34,8 @@ import router from "../router";
 export default {
   data: () => {
     return {
-      message: ""
+      message:
+        "Hello I am the blacksmith. I can make weapons and enhance them. For a fee."
     };
   },
   computed: {
@@ -64,7 +71,8 @@ export default {
     },
     talk(character) {
       if (this.message === "Do you like weapons? I do.") {
-        this.message = "In the future I will be able to make you a weapon.";
+        this.message =
+          "If you have enough money I will be able to make you a weapon.";
       } else {
         this.message = "Do you like weapons? I do.";
       }

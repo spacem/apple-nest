@@ -22,10 +22,16 @@
         <div v-if="selectedCharacter.bag.seeds">
           <button @click="tryPlantSeed()">Plant Seed</button>
         </div>
-        <div v-else-if="selectedCharacter.bag.megaSeeds">
+        <div v-if="selectedCharacter.bag.megaSeeds">
           <button @click="tryPlantMegaSeed()">Plant Mega Seed</button>
         </div>
-        <span v-else>If you had seeds you could plant them here</span>
+        <span
+          v-if="
+            !selectedCharacter.bag.megaSeeds && !selectedCharacter.bag.seeds
+          "
+        >
+          If you had seeds you could plant them here
+        </span>
       </div>
     </div>
     <router-link to="/farm">Farm</router-link>

@@ -1,22 +1,19 @@
 <template>
   <div>
     <h1>Appleosouras NPC</h1>
-    <div>
-      Hello I am the Appleosouras. I will pay you if you feed me.
+    <div class="messages">
+      <div class="message">
+        {{ message }}
+      </div>
+      <div class="actions">
+        <button @click="talk()">Talk</button>
+        <button @click="tryToSellApple()">Feed an Apple</button>
+      </div>
     </div>
-    <div>
-      {{ message }}
-    </div>
-    <div>
-      <button @click="talk()">Talk</button>
-    </div>
-    <div>
-      <button @click="tryToSellApple()">Feed an Apple</button>
-    </div>
-    <router-link to="/town">Town</router-link>
+    <div class="image appleosouras"></div>
+    <router-link to="/town">Go Back to Town</router-link>
   </div>
 </template>
-
 <script>
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { mapGetters, mapActions } from "vuex";
@@ -25,7 +22,7 @@ import router from "../router";
 export default {
   data: () => {
     return {
-      message: ""
+      message: "Hello, I am the Appleosouras. I will pay you if you feed me."
     };
   },
   methods: {
