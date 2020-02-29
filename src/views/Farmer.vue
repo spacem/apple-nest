@@ -4,14 +4,15 @@
     <div>
       Hello I am the farmer. If you had money you could buy seeds from me.
     </div>
-    <div>
-      {{ message }}
-    </div>
+    <div>{{ message }}</div>
     <div>
       <button @click="talk()">Talk</button>
     </div>
     <div>
       <button @click="tryToBuySeed()">Buy a Seed</button>
+    </div>
+    <div>
+      <button @click="tryToBuyMegaSeed()">Buy a Mega-Seed</button>
     </div>
     <router-link to="/farm">Farm</router-link>
   </div>
@@ -29,11 +30,20 @@ export default {
     };
   },
   methods: {
-    ...mapActions("characters", ["buySeed"]),
+    ...mapActions("characters", ["buySeed", "buyMegaSeed"]),
     tryToBuySeed() {
       try {
         this.buySeed();
         this.message = "Have fun farming";
+      } catch (err) {
+        this.message = err.message;
+      }
+    },
+    tryToBuyMegaSeed() {
+      try {
+        this.buyMegaSeed();
+        this.message =
+          "Those things take a while to grow but it is worth the wait";
       } catch (err) {
         this.message = err.message;
       }

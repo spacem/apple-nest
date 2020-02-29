@@ -5,7 +5,6 @@ import { Character } from "@/types/character";
 
 const REWARD_TIME = 60 * 60;
 const WEAPON_COST = 50;
-const WEAPON_UPGRADE_FACTOR = 50;
 
 // initial state
 const state: CharactersState = {
@@ -24,6 +23,25 @@ const getters: GetterTree<CharactersState, RootState> = {
   },
   storage: state => {
     return state.storage;
+  },
+  growSeconds: state => {
+    if (state.selectedCharacter) {
+      let secsToGrow = 0;
+      let plantDate = 0;
+      if (state.selectedCharacter.seedPlantDate) {
+        secsToGrow = 60;
+        plantDate = state.selectedCharacter.seedPlantDate;
+      } else if (state.selectedCharacter.megaSeedPlantDate) {
+        secsToGrow = 600;
+        plantDate = state.selectedCharacter.megaSeedPlantDate;
+      } else {
+        throw new Error("No seed planted");
+      }
+      const timeGrowing = (new Date().valueOf() - plantDate) / 1000;
+      return secsToGrow - timeGrowing;
+    } else {
+      throw new Error("No character selected");
+    }
   }
 };
 
@@ -41,11 +59,17 @@ const actions: ActionTree<CharactersState, RootState> = {
   buySeed({ commit }) {
     commit("buySeed");
   },
+  buyMegaSeed({ commit }) {
+    commit("buyMegaSeed");
+  },
   harvest({ commit }) {
     commit("harvest");
   },
   plantSeed({ commit }) {
     commit("plantSeed");
+  },
+  plantMegaSeed({ commit }) {
+    commit("plantMegaSeed");
   },
   sellApple({ commit }) {
     commit("sellApple");
@@ -71,7 +95,7 @@ const mutations: MutationTree<CharactersState> = {
     state.characters.push(character);
   },
   select(state, character: Character) {
-    if (character && !character.bag) {
+    if (character) {
       initBag(character);
     }
     state.selectedCharacter = character;
@@ -113,12 +137,41 @@ const mutations: MutationTree<CharactersState> = {
       throw new Error(`No character selected`);
     }
   },
+  buyMegaSeed(state) {
+    if (state.selectedCharacter) {
+      if (state.selectedCharacter.bag.money >= 20) {
+        state.selectedCharacter.bag.money -= 20;
+        state.selectedCharacter.bag.megaSeeds++;
+      } else {
+        throw new Error(`Mega seeds cost 20. You need more money`);
+      }
+    } else {
+      throw new Error(`No character selected`);
+    }
+  },
   harvest(state) {
     if (state.selectedCharacter) {
-      state.selectedCharacter.seedPlantDate = undefined;
-      let numApples = Math.floor(Math.random() * 4);
-      if (numApples == 0) {
-        numApples = 1;
+      let numApples = 0;
+      if (state.selectedCharacter.seedPlantDate) {
+        state.selectedCharacter.seedPlantDate = undefined;
+        numApples = Math.floor(Math.random() * 4);
+        if (numApples == 0) {
+          numApples = 1;
+        }
+      } else if (state.selectedCharacter.megaSeedPlantDate) {
+        state.selectedCharacter.megaSeedPlantDate = undefined;
+        let roll = Math.random();
+        if (roll > 0.95) {
+          numApples = 100;
+        } else if (roll > 0.85) {
+          numApples = 60;
+        } else if (roll > 0.6) {
+          numApples = 50;
+        } else if (roll > 0.4) {
+          numApples = 20;
+        } else {
+          numApples = 10;
+        }
       }
       state.selectedCharacter.bag.apples += numApples;
     }
@@ -127,6 +180,12 @@ const mutations: MutationTree<CharactersState> = {
     if (state.selectedCharacter) {
       state.selectedCharacter.seedPlantDate = new Date().valueOf();
       state.selectedCharacter.bag.seeds--;
+    }
+  },
+  plantMegaSeed(state) {
+    if (state.selectedCharacter) {
+      state.selectedCharacter.megaSeedPlantDate = new Date().valueOf();
+      state.selectedCharacter.bag.megaSeeds--;
     }
   },
   sellApple(state) {
@@ -160,7 +219,7 @@ const mutations: MutationTree<CharactersState> = {
     if (
       state.selectedCharacter &&
       !state.selectedCharacter.weaponLevel &&
-      state.selectedCharacter.bag.money > WEAPON_COST
+      state.selectedCharacter.bag.money >= WEAPON_COST
     ) {
       state.selectedCharacter.weaponLevel = 1;
       state.selectedCharacter.bag.money -= WEAPON_COST;
@@ -175,7 +234,7 @@ const mutations: MutationTree<CharactersState> = {
       const requiredMoney = Math.floor(
         WEAPON_COST * 0.5 * state.selectedCharacter.weaponLevel
       );
-      if (state.selectedCharacter.bag.money > requiredMoney) {
+      if (state.selectedCharacter.bag.money >= requiredMoney) {
         state.selectedCharacter.bag.money -= requiredMoney;
         const roll = Math.random();
         if (roll > 0.3) {
@@ -194,11 +253,18 @@ const mutations: MutationTree<CharactersState> = {
 };
 
 function initBag(character: Character) {
-  character.bag = {
-    apples: 0,
-    money: 0,
-    seeds: 0
-  };
+  if (!character.bag) {
+    character.bag = {
+      apples: 0,
+      money: 0,
+      seeds: 0,
+      megaSeeds: 0
+    };
+  } else {
+    if (!character.bag.megaSeeds) {
+      character.bag.megaSeeds = 0;
+    }
+  }
 }
 
 export const characters: Module<CharactersState, RootState> = {

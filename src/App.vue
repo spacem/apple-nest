@@ -4,7 +4,8 @@
       Using character: {{ selectedCharacter.name }}
       <div v-if="selectedCharacter.bag">
         Money: {{ selectedCharacter.bag.money }} | Seeds:
-        {{ selectedCharacter.bag.seeds }} | Apples:
+        {{ selectedCharacter.bag.seeds }} | Mega Seeds:
+        {{ selectedCharacter.bag.megaSeeds }} | Apples:
         {{ selectedCharacter.bag.apples }}
       </div>
       <div v-if="selectedCharacter.weaponLevel">

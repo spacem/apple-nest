@@ -6,4 +6,5 @@ export interface Character {
   weaponLevel: number;
   lastRewardDate?: number;
   seedPlantDate?: number;
+  megaSeedPlantDate?: number;
 }
