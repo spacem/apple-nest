@@ -1,25 +1,28 @@
 <template>
   <div>
-    <h1>Storage NPC</h1>
-    <div>{{ storage }} money in storage</div>
-    <div>
-      Hello I am the storage person. I will hold your things and share them with
-      your other characters.
+    <h1>
+      Storage<br />
+      <small> {{ storage }} money in storage </small>
+    </h1>
+    <div class="messages">
+      <div class="message">
+        <div>{{ message }}</div>
+      </div>
+      <div class="actions">
+        <button @click="talk()">Talk</button>
+        <button @click="tryToStore()">Store Money</button>
+        <button @click="tryToTake()">Take Money</button>
+      </div>
     </div>
-    <div>{{ message }}</div>
-    <div>
-      <button @click="talk()">Talk</button>
-    </div>
-    <div>
-      <button @click="tryToStore()">Store Money</button>
-    </div>
-    <div>
-      <button @click="tryToTake()">Take Money</button>
-    </div>
+    <div class="image storage"></div>
     <router-link to="/town">Town</router-link>
   </div>
 </template>
-
+<style scoped lang="scss">
+.storage {
+  background-image: url("~@/assets/Storage.jpg");
+}
+</style>
 <script>
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { mapGetters, mapActions } from "vuex";
@@ -28,7 +31,8 @@ import router from "../router";
 export default {
   data: () => {
     return {
-      message: ""
+      message:
+        "Hello I am the storage person. I will hold your things and share them with your other characters."
     };
   },
   computed: {

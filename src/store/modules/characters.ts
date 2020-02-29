@@ -24,7 +24,7 @@ const getters: GetterTree<CharactersState, RootState> = {
   storage: state => {
     return state.storage;
   },
-  growSeconds: state => {
+  growReadyDate: state => {
     if (state.selectedCharacter) {
       let secsToGrow = 0;
       let plantDate = 0;
@@ -37,8 +37,7 @@ const getters: GetterTree<CharactersState, RootState> = {
       } else {
         throw new Error("No seed planted");
       }
-      const timeGrowing = (new Date().valueOf() - plantDate) / 1000;
-      return secsToGrow - timeGrowing;
+      return plantDate + secsToGrow * 1000;
     } else {
       throw new Error("No character selected");
     }

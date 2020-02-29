@@ -42,15 +42,6 @@
     }
   }
 }
-.blacksmith {
-  background-image: url("~@/assets/Blacksmith.jpg");
-}
-.appleosouras {
-  background-image: url("~@/assets/Appleosouras.jpg");
-}
-.farmer {
-  background-image: url("~@/assets/Farmer.jpg");
-}
 .image {
   width: 100%;
   height: 350px;

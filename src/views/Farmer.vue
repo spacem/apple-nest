@@ -15,6 +15,11 @@
     <router-link to="/farm">Farm</router-link>
   </div>
 </template>
+<style scoped lang="scss">
+.farmer {
+  background-image: url("~@/assets/Farmer.jpg");
+}
+</style>
 <script>
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { mapGetters, mapActions } from "vuex";

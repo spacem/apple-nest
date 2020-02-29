@@ -14,6 +14,11 @@
     <router-link to="/town">Go Back to Town</router-link>
   </div>
 </template>
+<style scoped lang="scss">
+.appleosouras {
+  background-image: url("~@/assets/Appleosouras.jpg");
+}
+</style>
 <script>
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { mapGetters, mapActions } from "vuex";

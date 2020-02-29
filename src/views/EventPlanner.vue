@@ -1,23 +1,24 @@
 <template>
   <div>
     <h1>Event Planner NPC</h1>
-    <div>
-      Hello I am the event planner. We have a login event. I will give you free
-      money every hour!
+    <div class="messages">
+      <div class="message">
+        {{ message }}
+      </div>
+      <div class="actions">
+        <button @click="talk()">Talk</button>
+        <button @click="collectReward()">Collect Reward</button>
+      </div>
     </div>
-    <div>
-      {{ message }}
-    </div>
-    <div>
-      <button @click="talk()">Talk</button>
-    </div>
-    <div>
-      <button @click="collectReward()">Collect Reward</button>
-    </div>
+    <div class="image eventplanner"></div>
     <router-link to="/town">Town</router-link>
   </div>
 </template>
-
+<style scoped lang="scss">
+.eventplanner {
+  background-image: url("~@/assets/EventPlanner.jpg");
+}
+</style>
 <script>
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { mapGetters, mapActions } from "vuex";
@@ -26,7 +27,8 @@ import router from "../router";
 export default {
   data: () => {
     return {
-      message: ""
+      message:
+        "Hello I am the event planner. We have a login event. I will give you free money every hour!"
     };
   },
   methods: {

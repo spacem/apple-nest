@@ -25,7 +25,11 @@
     <router-link to="/town">Town</router-link>
   </div>
 </template>
-
+<style scoped lang="scss">
+.blacksmith {
+  background-image: url("~@/assets/Blacksmith.jpg");
+}
+</style>
 <script>
 import { Component, Prop, Vue } from "vue-property-decorator";
 import { mapGetters, mapActions } from "vuex";

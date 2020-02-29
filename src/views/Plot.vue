@@ -1,9 +1,10 @@
 <template>
   <div>
     <h1>Plot</h1>
-    <div v-if="selectedCharacter">
-      <div>{{ message }}</div>
+    <div v-if="selectedCharacter" class="messages">
+      <div class="message">{{ message }}</div>
       <div
+        class="message"
         v-if="
           selectedCharacter.seedPlantDate || selectedCharacter.megaSeedPlantDate
         "
@@ -19,24 +20,36 @@
         </span>
       </div>
       <div v-else>
-        <div v-if="selectedCharacter.bag.seeds">
-          <button @click="tryPlantSeed()">Plant Seed</button>
-        </div>
-        <div v-if="selectedCharacter.bag.megaSeeds">
-          <button @click="tryPlantMegaSeed()">Plant Mega Seed</button>
-        </div>
-        <span
+        <div
+          class="message"
           v-if="
             !selectedCharacter.bag.megaSeeds && !selectedCharacter.bag.seeds
           "
         >
           If you had seeds you could plant them here
-        </span>
+        </div>
+        <div class="actions">
+          <button @click="tryPlantSeed()" v-if="selectedCharacter.bag.seeds">
+            Plant Seed
+          </button>
+          <button
+            v-if="selectedCharacter.bag.megaSeeds"
+            @click="tryPlantMegaSeed()"
+          >
+            Plant Mega Seed
+          </button>
+        </div>
       </div>
     </div>
+    <div class="image plot"></div>
     <router-link to="/farm">Farm</router-link>
   </div>
 </template>
+<style scoped lang="scss">
+.plot {
+  background-image: url("~@/assets/Plot.jpg");
+}
+</style>
 <script>
 import { mapGetters, mapActions } from "vuex";
 
@@ -47,15 +60,18 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("characters", ["selectedCharacter", "growSeconds"])
+    ...mapGetters("characters", ["selectedCharacter", "growReadyDate"])
   },
   methods: {
     ...mapActions("characters", ["harvest", "plantSeed", "plantMegaSeed"]),
+    getGrowSeconds() {
+      return (this.growReadyDate - new Date().valueOf()) / 1000;
+    },
     getTime() {
-      return Math.ceil(this.growSeconds / 60);
+      return Math.ceil(this.getGrowSeconds() / 60);
     },
     getSeconds() {
-      return Math.ceil(this.growSeconds);
+      return Math.ceil(this.getGrowSeconds());
     },
     seedReady() {
       return this.getTime() <= 0;
