@@ -2,9 +2,7 @@
   <div>
     <h1>Blacksmith NPC</h1>
     <div>
-      Hello I am the blacksmith.
-      I can make weapons and enhance them.
-      For a fee.
+      Hello I am the blacksmith. I can make weapons and enhance them. For a fee.
     </div>
     <div>
       {{ message }}
@@ -41,8 +39,9 @@ export default {
     tryMakeWeapon() {
       try {
         this.makeWeapon();
-        this.message = "Here you go... This weapon might be useful in the future.";
-      } catch(err) {
+        this.message =
+          "Here you go... This weapon might be useful in the future.";
+      } catch (err) {
         this.message = err.message;
       }
     },
@@ -50,14 +49,16 @@ export default {
       try {
         const previousLevel = this.selectedCharacter.weaponLevel;
         this.upgradeWeapon();
-        if(this.selectedCharacter.weaponLevel > previousLevel) {
+        if (this.selectedCharacter.weaponLevel > previousLevel) {
           this.message = "You are getting stronger.";
-        } else if(this.selectedCharacter.weaponLevel < previousLevel) {
-          this.message = "Sorry... Your weapon actually got weaker. That was very unlucky.";
+        } else if (this.selectedCharacter.weaponLevel < previousLevel) {
+          this.message =
+            "Sorry... Your weapon actually got weaker. That was very unlucky.";
         } else {
-          this.message = "Wow unlucky. Nothing happened. Sorry, no refunds. Better luck next time.";
+          this.message =
+            "Wow unlucky. Nothing happened. Sorry, no refunds. Better luck next time.";
         }
-      } catch(err) {
+      } catch (err) {
         this.message = err.message;
       }
     },

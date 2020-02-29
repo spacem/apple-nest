@@ -83,14 +83,16 @@ const mutations: MutationTree<CharactersState> = {
         remainingTime =
           REWARD_TIME -
           (new Date().valueOf() - state.selectedCharacter.lastRewardDate) /
-          1000;
+            1000;
       }
       if (remainingTime <= 0) {
         state.selectedCharacter.lastRewardDate = new Date().valueOf();
         state.selectedCharacter.bag.money += 1;
       } else {
         throw new Error(
-          `${Math.ceil(remainingTime / 60)} minutes left until you can get another event reward`
+          `${Math.ceil(
+            remainingTime / 60
+          )} minutes left until you can get another event reward`
         );
       }
     } else {
@@ -155,29 +157,37 @@ const mutations: MutationTree<CharactersState> = {
     }
   },
   makeWeapon(state) {
-    if (state.selectedCharacter &&
+    if (
+      state.selectedCharacter &&
       !state.selectedCharacter.weaponLevel &&
-      state.selectedCharacter.bag.money > WEAPON_COST) {
-
+      state.selectedCharacter.bag.money > WEAPON_COST
+    ) {
       state.selectedCharacter.weaponLevel = 1;
       state.selectedCharacter.bag.money -= WEAPON_COST;
     } else {
-      throw new Error('You do not have enough money. Come back when you have ' + WEAPON_COST);
+      throw new Error(
+        "You do not have enough money. Come back when you have " + WEAPON_COST
+      );
     }
   },
   upgradeWeapon(state) {
     if (state.selectedCharacter && state.selectedCharacter.weaponLevel) {
-      const requiredMoney = Math.floor(WEAPON_COST * 0.5 * state.selectedCharacter.weaponLevel);
+      const requiredMoney = Math.floor(
+        WEAPON_COST * 0.5 * state.selectedCharacter.weaponLevel
+      );
       if (state.selectedCharacter.bag.money > requiredMoney) {
         state.selectedCharacter.bag.money -= requiredMoney;
         const roll = Math.random();
-        if (roll > 0.30) {
+        if (roll > 0.3) {
           state.selectedCharacter.weaponLevel++;
-        } else if (roll < 0.10) {
+        } else if (roll < 0.1) {
           state.selectedCharacter.weaponLevel--;
         }
       } else {
-        throw new Error('Upgrading is not cheap you know. Come back when you have ' + requiredMoney);
+        throw new Error(
+          "Upgrading is not cheap you know. Come back when you have " +
+            requiredMoney
+        );
       }
     }
   }

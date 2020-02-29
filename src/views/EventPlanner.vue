@@ -2,9 +2,8 @@
   <div>
     <h1>Event Planner NPC</h1>
     <div>
-      Hello I am the event planner.
-      We have a login event.
-      I will give you free money every hour!
+      Hello I am the event planner. We have a login event. I will give you free
+      money every hour!
     </div>
     <div>
       {{ message }}

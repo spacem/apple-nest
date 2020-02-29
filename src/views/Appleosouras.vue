@@ -2,8 +2,7 @@
   <div>
     <h1>Appleosouras NPC</h1>
     <div>
-      Hello I am the Appleosouras.
-      I will pay you if you feed me.
+      Hello I am the Appleosouras. I will pay you if you feed me.
     </div>
     <div>
       {{ message }}
