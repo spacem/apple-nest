@@ -14,6 +14,9 @@
           <span v-if="selectedCharacter.bag.apples">
             | Apples: {{ selectedCharacter.bag.apples }}</span
           >
+          <span v-if="selectedCharacter.bag.pies">
+            | Pies: {{ selectedCharacter.bag.pies }}</span
+          >
         </div>
         <div v-if="selectedCharacter.weaponLevel">
           Weapon Level: {{ selectedCharacter.weaponLevel }}

@@ -8,10 +8,11 @@
       <div class="actions">
         <button @click="talk()">Talk</button>
         <button @click="tryToSellApple()">Feed an Apple</button>
+        <button @click="tryToSellPie()">Feed a Pie</button>
       </div>
     </div>
     <div class="image appleosouras"></div>
-    <router-link to="/town">Go Back to Town</router-link>
+    <router-link to="/town">Town</router-link>
   </div>
 </template>
 <style scoped lang="scss">
@@ -31,11 +32,19 @@ export default {
     };
   },
   methods: {
-    ...mapActions("characters", ["sellApple"]),
+    ...mapActions("characters", ["sellApple", "sellPie"]),
     tryToSellApple() {
       try {
         this.sellApple();
         this.message = "Yum.. Yum.. here is some money. Spend it wisely.";
+      } catch (err) {
+        this.message = err.message;
+      }
+    },
+    tryToSellPie() {
+      try {
+        this.sellPie();
+        this.message = "Pies are my favorite. Here, have some money.";
       } catch (err) {
         this.message = err.message;
       }

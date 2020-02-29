@@ -2,6 +2,9 @@
   <div>
     <h1>Create Character</h1>
     <div>
+      {{ message }}
+    </div>
+    <div>
       <input
         v-model="characterName"
         placeholder="Character Name"
@@ -20,14 +23,19 @@ import router from "../router";
 export default {
   data: () => {
     return {
-      characterName: ""
+      characterName: "",
+      message: ""
     };
   },
   methods: {
     ...mapActions("characters", ["create"]),
     doCreate(name) {
-      this.create({ name: name });
-      router.push("/select-character");
+      try {
+        this.create({ name: name });
+        router.push("/select-character");
+      } catch (err) {
+        this.message = err.message;
+      }
     }
   }
 };

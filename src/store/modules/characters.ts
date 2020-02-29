@@ -46,7 +46,18 @@ const getters: GetterTree<CharactersState, RootState> = {
 
 // actions
 const actions: ActionTree<CharactersState, RootState> = {
-  create({ commit }, character: Character) {
+  create({ commit, getters }, character: Character) {
+    if (!character.name) {
+      throw new Error("Characters must have a name");
+    }
+    if (
+      getters.characters &&
+      getters.characters.find((c: Character) => c.name === character.name) !=
+        null
+    ) {
+      throw new Error("Character name already taken");
+    }
+
     commit("create", character);
   },
   select({ commit }, character: Character) {
@@ -77,6 +88,9 @@ const actions: ActionTree<CharactersState, RootState> = {
   sellApple({ commit }) {
     commit("sellApple");
   },
+  sellPie({ commit }) {
+    commit("sellPie");
+  },
   storeMoney({ commit }) {
     commit("storeMoney");
   },
@@ -88,6 +102,9 @@ const actions: ActionTree<CharactersState, RootState> = {
   },
   upgradeWeapon({ commit }) {
     commit("upgradeWeapon");
+  },
+  makePie({ commit }) {
+    commit("makePie");
   }
 };
 
@@ -203,6 +220,18 @@ const mutations: MutationTree<CharactersState> = {
       throw new Error(`No character selected`);
     }
   },
+  sellPie(state) {
+    if (state.selectedCharacter) {
+      if (state.selectedCharacter.bag.pies > 0) {
+        state.selectedCharacter.bag.pies--;
+        state.selectedCharacter.bag.money += 500;
+      } else {
+        throw new Error(`Not enough pies. You should try cooking some.`);
+      }
+    } else {
+      throw new Error(`No character selected`);
+    }
+  },
   storeMoney(state) {
     if (state.selectedCharacter) {
       if (!state.storage) {
@@ -252,6 +281,14 @@ const mutations: MutationTree<CharactersState> = {
         );
       }
     }
+  },
+  makePie(state) {
+    if (state.selectedCharacter && state.selectedCharacter.bag.apples >= 500) {
+      state.selectedCharacter.bag.apples -= 500;
+      state.selectedCharacter.bag.pies++;
+    } else {
+      throw new Error("The pie recipe needs 500 apples");
+    }
   }
 };
 
@@ -261,11 +298,15 @@ function initBag(character: Character) {
       apples: 0,
       money: 0,
       seeds: 0,
-      megaSeeds: 0
+      megaSeeds: 0,
+      pies: 0
     };
   } else {
     if (!character.bag.megaSeeds) {
       character.bag.megaSeeds = 0;
+    }
+    if (!character.bag.pies) {
+      character.bag.pies = 0;
     }
   }
 }

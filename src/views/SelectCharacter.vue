@@ -1,13 +1,9 @@
 <template>
   <div>
     <h1>Select Character</h1>
-    <div class="character-list">
+    <div class="character-list" v-if="!selecting">
       <div v-for="character in characters" :key="character.name">
-        <button
-          :disabled="selecting"
-          class="character-button"
-          @click="selectCharacter(character)"
-        >
+        <button class="character-button" @click="selectCharacter(character)">
           {{ character.name }}
         </button>
       </div>
