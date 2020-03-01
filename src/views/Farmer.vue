@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Farmer NPC</h1>
+    <h1>Farmer</h1>
     <div class="messages">
       <div class="message">
         {{ message }}

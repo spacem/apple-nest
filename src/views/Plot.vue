@@ -3,42 +3,25 @@
     <h1>Plot</h1>
     <div v-if="selectedCharacter" class="messages">
       <div class="message">{{ message }}</div>
-      <div
-        class="message"
-        v-if="
-          selectedCharacter.seedPlantDate || selectedCharacter.megaSeedPlantDate
-        "
-      >
-        <button @click="tryHarvest()" v-if="seedReady()">Harvest Plant</button>
-        <span v-else>
-          <span v-if="getTime() > 1"
-            >{{ getTime() }} minutes left until ready for harvest</span
-          >
-          <span v-else
-            >{{ getSeconds() }} seconds left until ready for harvest</span
-          >
-        </span>
-      </div>
-      <div v-else>
-        <div
-          class="message"
-          v-if="
-            !selectedCharacter.bag.megaSeeds && !selectedCharacter.bag.seeds
-          "
+      <div class="actions">
+        <button
+          @click="tryHarvest()"
+          v-if="getAnySeedReadyDate() && seedReady()"
         >
-          If you had seeds you could plant them here
-        </div>
-        <div class="actions">
-          <button @click="tryPlantSeed()" v-if="selectedCharacter.bag.seeds">
-            Plant Seed
-          </button>
-          <button
-            v-if="selectedCharacter.bag.megaSeeds"
-            @click="tryPlantMegaSeed()"
-          >
-            Plant Mega Seed
-          </button>
-        </div>
+          Harvest Plant
+        </button>
+        <button
+          @click="tryPlantSeed()"
+          v-if="selectedCharacter.bag.seeds && !getAnySeedReadyDate()"
+        >
+          Plant Seed
+        </button>
+        <button
+          v-if="selectedCharacter.bag.megaSeeds && !getAnySeedReadyDate()"
+          @click="tryPlantMegaSeed()"
+        >
+          Plant Mega Seed
+        </button>
       </div>
     </div>
     <div class="image plot"></div>
@@ -56,21 +39,25 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   data: () => {
     return {
-      message: "",
+      message: "If you had seeds you could plant them here",
       growSeconds: undefined,
       intervalId: undefined
     };
   },
   computed: {
-    ...mapGetters("characters", ["selectedCharacter", "growReadyDate"])
+    ...mapGetters("characters", ["selectedCharacter"])
   },
   methods: {
     ...mapActions("characters", ["harvest", "plantSeed", "plantMegaSeed"]),
     getTime() {
-      return Math.ceil(this.growSeconds / 60);
+      if (this.growSeconds != null) {
+        return Math.ceil(this.growSeconds / 60);
+      }
     },
     getSeconds() {
-      return Math.ceil(this.growSeconds);
+      if (this.growSeconds != null) {
+        return Math.ceil(this.growSeconds);
+      }
     },
     seedReady() {
       return this.getTime() <= 0;
@@ -101,9 +88,31 @@ export default {
         this.message = err.message;
       }
     },
+    getAnySeedReadyDate() {
+      const character = this.selectedCharacter;
+      if (character.seedReadyDate != null) {
+        return character.seedReadyDate;
+      } else if (character.megaSeedReadyDate != null) {
+        return character.megaSeedReadyDate;
+      }
+    },
     setGrowSeconds() {
       try {
-        this.growSeconds = (this.growReadyDate - new Date().valueOf()) / 1000;
+        const ready = this.getAnySeedReadyDate();
+        if (ready != null) {
+          this.growSeconds = (ready - new Date().valueOf()) / 1000;
+          if (this.growSeconds > 60) {
+            this.message =
+              Math.ceil(this.growSeconds / 60) +
+              " minutes left until ready for harvest";
+          } else if (this.growSeconds > 0) {
+            this.message =
+              Math.ceil(this.growSeconds) +
+              " seconds left until ready for harvest";
+          } else {
+            this.message = "Looks like your Apples are ready";
+          }
+        }
       } catch (err) {
         this.message = err.message;
         this.growSeconds = undefined;

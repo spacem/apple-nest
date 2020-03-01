@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Event Planner NPC</h1>
+    <h1>Event Planner</h1>
     <div class="messages">
       <div class="message">
         {{ message }}

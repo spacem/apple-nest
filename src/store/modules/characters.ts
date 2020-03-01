@@ -5,12 +5,14 @@ import { Character } from "@/types/character";
 
 const REWARD_TIME = 60 * 60;
 const WEAPON_COST = 50;
+const SEED_GROW_TIME = 1000 * 60;
+const MEGA_SEED_GROW_TIME = 1000 * 600;
 
 // initial state
 const state: CharactersState = {
   storage: 0,
   characters: [],
-  selectedCharacter: undefined
+  selectedIndex: undefined
 };
 
 // getters
@@ -19,28 +21,19 @@ const getters: GetterTree<CharactersState, RootState> = {
     return state.characters;
   },
   selectedCharacter: state => {
-    return state.selectedCharacter;
+    if (state.selectedIndex != null && state.selectedIndex >= 0) {
+      return state.characters[state.selectedIndex];
+    }
+  },
+  selectedCharacterIndex: state => {
+    if (state.selectedIndex != null && state.selectedIndex >= 0) {
+      return state.selectedIndex;
+    } else {
+      return -1;
+    }
   },
   storage: state => {
     return state.storage;
-  },
-  growReadyDate: state => {
-    if (state.selectedCharacter) {
-      let secsToGrow = 0;
-      let plantDate = 0;
-      if (state.selectedCharacter.seedPlantDate) {
-        secsToGrow = 60;
-        plantDate = state.selectedCharacter.seedPlantDate;
-      } else if (state.selectedCharacter.megaSeedPlantDate) {
-        secsToGrow = 600;
-        plantDate = state.selectedCharacter.megaSeedPlantDate;
-      } else {
-        throw new Error("No seed planted");
-      }
-      return plantDate + secsToGrow * 1000;
-    } else {
-      throw new Error("No character selected");
-    }
   }
 };
 
@@ -63,48 +56,80 @@ const actions: ActionTree<CharactersState, RootState> = {
   select({ commit }, character: Character) {
     commit("select", character);
   },
-  collectEventReward({ commit }) {
-    commit("collectEventReward");
+  collectEventReward({ commit, getters }) {
+    if (getters.selectedCharacterIndex == -1) {
+      throw new Error(`No character selected`);
+    }
+    commit("collectEventReward", getters.selectedCharacterIndex);
   },
-  buySeed({ commit }) {
-    commit("buySeed");
+  buySeed({ commit, getters }) {
+    commit("buySeed", getters.selectedCharacterIndex);
   },
-  buyMegaSeed({ commit }) {
-    commit("buyMegaSeed");
+  buyMegaSeed({ commit, getters }) {
+    if (getters.selectedCharacterIndex == -1) {
+      throw new Error(`No character selected`);
+    }
+    commit("buyMegaSeed", getters.selectedCharacterIndex);
   },
   harvest({ commit, getters }) {
-    if (getters.growReadyDate < new Date().valueOf()) {
-      commit("harvest");
-    } else {
-      throw new Error("Cannot harvest - not ready yet");
+    if (getters.selectedCharacterIndex == -1) {
+      throw new Error(`No character selected`);
     }
+    commit("harvest", getters.selectedCharacterIndex);
   },
-  plantSeed({ commit }) {
-    commit("plantSeed");
+  plantSeed({ commit, getters }) {
+    if (getters.selectedCharacterIndex == -1) {
+      throw new Error(`No character selected`);
+    }
+    commit("plantSeed", getters.selectedCharacterIndex);
   },
-  plantMegaSeed({ commit }) {
-    commit("plantMegaSeed");
+  plantMegaSeed({ commit, getters }) {
+    if (getters.selectedCharacterIndex == -1) {
+      throw new Error(`No character selected`);
+    }
+    commit("plantMegaSeed", getters.selectedCharacterIndex);
   },
-  sellApple({ commit }) {
-    commit("sellApple");
+  sellApple({ commit, getters }) {
+    if (getters.selectedCharacterIndex == -1) {
+      throw new Error(`No character selected`);
+    }
+    commit("sellApple", getters.selectedCharacterIndex);
   },
-  sellPie({ commit }) {
-    commit("sellPie");
+  sellPie({ commit, getters }) {
+    if (getters.selectedCharacterIndex == -1) {
+      throw new Error(`No character selected`);
+    }
+    commit("sellPie", getters.selectedCharacterIndex);
   },
-  storeMoney({ commit }) {
-    commit("storeMoney");
+  storeMoney({ commit, getters }) {
+    if (getters.selectedCharacterIndex == -1) {
+      throw new Error(`No character selected`);
+    }
+    commit("storeMoney", getters.selectedCharacterIndex);
   },
-  takeMoney({ commit }) {
-    commit("takeMoney");
+  takeMoney({ commit, getters }) {
+    if (getters.selectedCharacterIndex == -1) {
+      throw new Error(`No character selected`);
+    }
+    commit("takeMoney", getters.selectedCharacterIndex);
   },
-  makeWeapon({ commit }) {
-    commit("makeWeapon");
+  makeWeapon({ commit, getters }) {
+    if (getters.selectedCharacterIndex == -1) {
+      throw new Error(`No character selected`);
+    }
+    commit("makeWeapon", getters.selectedCharacterIndex);
   },
-  upgradeWeapon({ commit }) {
-    commit("upgradeWeapon");
+  upgradeWeapon({ commit, getters }) {
+    if (getters.selectedCharacterIndex == -1) {
+      throw new Error(`No character selected`);
+    }
+    commit("upgradeWeapon", getters.selectedCharacterIndex);
   },
-  makePie({ commit }) {
-    commit("makePie");
+  makePie({ commit, getters }) {
+    if (getters.selectedCharacterIndex == -1) {
+      throw new Error(`No character selected`);
+    }
+    commit("makePie", getters.selectedCharacterIndex);
   }
 };
 
@@ -118,161 +143,147 @@ const mutations: MutationTree<CharactersState> = {
     if (character) {
       initBag(character);
     }
-    state.selectedCharacter = character;
+    state.selectedIndex = state.characters.indexOf(character);
   },
-  collectEventReward(state) {
-    if (state.selectedCharacter) {
-      let remainingTime = 0;
-      if (state.selectedCharacter.lastRewardDate) {
-        remainingTime =
-          REWARD_TIME -
-          (new Date().valueOf() - state.selectedCharacter.lastRewardDate) /
-            1000;
-      }
-      if (remainingTime <= 0) {
-        state.selectedCharacter.lastRewardDate = new Date().valueOf();
-        state.selectedCharacter.bag.money += 1;
-      } else {
-        throw new Error(
-          `${Math.ceil(
-            remainingTime / 60
-          )} minutes left until you can get another event reward`
-        );
-      }
+  collectEventReward(state, index) {
+    const character = state.characters[index];
+    let remainingTime = 0;
+    if (character.lastRewardDate) {
+      remainingTime =
+        REWARD_TIME - (new Date().valueOf() - character.lastRewardDate) / 1000;
+    }
+    if (remainingTime <= 0) {
+      character.lastRewardDate = new Date().valueOf();
+      character.bag.money += 1;
     } else {
-      throw new Error(`No character selected`);
+      throw new Error(
+        `${Math.ceil(
+          remainingTime / 60
+        )} minutes left until you can get another event reward`
+      );
     }
   },
-  buySeed(state) {
-    if (state.selectedCharacter) {
-      if (state.selectedCharacter.bag.money > 0) {
-        state.selectedCharacter.bag.money--;
-        state.selectedCharacter.bag.seeds++;
-      } else {
-        throw new Error(
-          `Not enough money. Maybe you can take part in the event.`
-        );
-      }
+  buySeed(state, index) {
+    const character = state.characters[index];
+    if (character.bag.money > 0) {
+      character.bag.money--;
+      character.bag.seeds++;
     } else {
-      throw new Error(`No character selected`);
+      throw new Error(
+        `Not enough money. Maybe you can take part in the event.`
+      );
     }
   },
-  buyMegaSeed(state) {
-    if (state.selectedCharacter) {
-      if (state.selectedCharacter.bag.money >= 20) {
-        state.selectedCharacter.bag.money -= 20;
-        state.selectedCharacter.bag.megaSeeds++;
+  buyMegaSeed(state, index) {
+    const character = state.characters[index];
+    if (character) {
+      if (character.bag.money >= 20) {
+        character.bag.money -= 20;
+        character.bag.megaSeeds++;
       } else {
         throw new Error(`Mega seeds cost 20. You need more money`);
       }
-    } else {
-      throw new Error(`No character selected`);
     }
   },
-  harvest(state) {
-    if (state.selectedCharacter) {
-      let numApples = 0;
-      if (state.selectedCharacter.seedPlantDate) {
-        state.selectedCharacter.seedPlantDate = undefined;
-        numApples = Math.floor(Math.random() * 4);
-        if (numApples == 0) {
-          numApples = 1;
-        }
-      } else if (state.selectedCharacter.megaSeedPlantDate) {
-        state.selectedCharacter.megaSeedPlantDate = undefined;
-        let roll = Math.random();
-        if (roll > 0.95) {
-          numApples = 100;
-        } else if (roll > 0.85) {
-          numApples = 60;
-        } else if (roll > 0.6) {
-          numApples = 50;
-        } else if (roll > 0.4) {
-          numApples = 20;
-        } else {
-          numApples = 10;
-        }
+  harvest(state, index) {
+    const character = state.characters[index];
+    let numApples = 0;
+    if (character.seedReadyDate) {
+      if (character.seedReadyDate > new Date().valueOf()) {
+        throw new Error("Cannot harvest - not ready yet");
       }
-      state.selectedCharacter.bag.apples += numApples;
-    }
-  },
-  plantSeed(state) {
-    if (state.selectedCharacter) {
-      state.selectedCharacter.seedPlantDate = new Date().valueOf();
-      state.selectedCharacter.bag.seeds--;
-    }
-  },
-  plantMegaSeed(state) {
-    if (state.selectedCharacter) {
-      state.selectedCharacter.megaSeedPlantDate = new Date().valueOf();
-      state.selectedCharacter.bag.megaSeeds--;
-    }
-  },
-  sellApple(state) {
-    if (state.selectedCharacter) {
-      if (state.selectedCharacter.bag.apples > 0) {
-        state.selectedCharacter.bag.apples--;
-        state.selectedCharacter.bag.money += 10;
+      character.seedReadyDate = undefined;
+      numApples = Math.floor(Math.random() * 4);
+      if (numApples == 0) {
+        numApples = 1;
+      }
+    } else if (character.megaSeedReadyDate) {
+      if (character.megaSeedReadyDate > new Date().valueOf()) {
+        throw new Error("Cannot harvest - not ready yet");
+      }
+      character.megaSeedReadyDate = undefined;
+      let roll = Math.random();
+      if (roll > 0.95) {
+        numApples = 100;
+      } else if (roll > 0.85) {
+        numApples = 60;
+      } else if (roll > 0.6) {
+        numApples = 50;
+      } else if (roll > 0.4) {
+        numApples = 20;
       } else {
-        throw new Error(`Not enough apples. You should try growing some.`);
+        numApples = 10;
       }
     } else {
-      throw new Error(`No character selected`);
+      throw new Error(`No seeds planted`);
     }
+    character.bag.apples += numApples;
   },
-  sellPie(state) {
-    if (state.selectedCharacter) {
-      if (state.selectedCharacter.bag.pies > 0) {
-        state.selectedCharacter.bag.pies--;
-        state.selectedCharacter.bag.money += 500;
-      } else {
-        throw new Error(`Not enough pies. You should try cooking some.`);
-      }
+  plantSeed(state, index) {
+    const character = state.characters[index];
+    character.seedReadyDate = new Date().valueOf() + SEED_GROW_TIME;
+    character.bag.seeds--;
+  },
+  plantMegaSeed(state, index) {
+    const character = state.characters[index];
+    character.megaSeedReadyDate = new Date().valueOf() + MEGA_SEED_GROW_TIME;
+    character.bag.megaSeeds--;
+  },
+  sellApple(state, index) {
+    const character = state.characters[index];
+    if (character.bag.apples > 0) {
+      character.bag.apples--;
+      character.bag.money += 10;
     } else {
-      throw new Error(`No character selected`);
+      throw new Error(`Not enough apples. You should try growing some.`);
     }
   },
-  storeMoney(state) {
-    if (state.selectedCharacter) {
-      if (!state.storage) {
-        state.storage = 0;
-      }
-      state.storage += state.selectedCharacter.bag.money;
-      state.selectedCharacter.bag.money = 0;
+  sellPie(state, index) {
+    const character = state.characters[index];
+    if (character.bag.pies > 0) {
+      character.bag.pies--;
+      character.bag.money += 500;
+    } else {
+      throw new Error(`Not enough pies. You should try cooking some.`);
     }
   },
-  takeMoney(state) {
-    if (state.selectedCharacter) {
-      state.selectedCharacter.bag.money += state.storage;
+  storeMoney(state, index) {
+    const character = state.characters[index];
+    if (!state.storage) {
       state.storage = 0;
     }
+    state.storage += character.bag.money;
+    character.bag.money = 0;
   },
-  makeWeapon(state) {
-    if (
-      state.selectedCharacter &&
-      !state.selectedCharacter.weaponLevel &&
-      state.selectedCharacter.bag.money >= WEAPON_COST
-    ) {
-      state.selectedCharacter.weaponLevel = 1;
-      state.selectedCharacter.bag.money -= WEAPON_COST;
+  takeMoney(state, index) {
+    const character = state.characters[index];
+    character.bag.money += state.storage;
+    state.storage = 0;
+  },
+  makeWeapon(state, index) {
+    const character = state.characters[index];
+    if (!character.weaponLevel && character.bag.money >= WEAPON_COST) {
+      character.weaponLevel = 1;
+      character.bag.money -= WEAPON_COST;
     } else {
       throw new Error(
         "You do not have enough money. Come back when you have " + WEAPON_COST
       );
     }
   },
-  upgradeWeapon(state) {
-    if (state.selectedCharacter && state.selectedCharacter.weaponLevel) {
+  upgradeWeapon(state, index) {
+    const character = state.characters[index];
+    if (character.weaponLevel) {
       const requiredMoney = Math.floor(
-        WEAPON_COST * 0.5 * state.selectedCharacter.weaponLevel
+        WEAPON_COST * 0.5 * character.weaponLevel
       );
-      if (state.selectedCharacter.bag.money >= requiredMoney) {
-        state.selectedCharacter.bag.money -= requiredMoney;
+      if (character.bag.money >= requiredMoney) {
+        character.bag.money -= requiredMoney;
         const roll = Math.random();
         if (roll > 0.3) {
-          state.selectedCharacter.weaponLevel++;
+          character.weaponLevel++;
         } else if (roll < 0.1) {
-          state.selectedCharacter.weaponLevel--;
+          character.weaponLevel--;
         }
       } else {
         throw new Error(
@@ -282,12 +293,13 @@ const mutations: MutationTree<CharactersState> = {
       }
     }
   },
-  makePie(state) {
-    if (state.selectedCharacter && state.selectedCharacter.bag.apples >= 500) {
-      state.selectedCharacter.bag.apples -= 500;
-      state.selectedCharacter.bag.pies++;
+  makePie(state, index) {
+    const character = state.characters[index];
+    if (character.bag.apples >= 100) {
+      character.bag.apples -= 100;
+      character.bag.pies++;
     } else {
-      throw new Error("The pie recipe needs 500 apples");
+      throw new Error("The pie recipe needs 100 apples");
     }
   }
 };

@@ -1,5 +1,5 @@
 import Vue from "vue";
-import VueRouter from "vue-router";
+import VueRouter, { Route } from "vue-router";
 import Home from "../views/Home.vue";
 import CreateAccount from "../views/CreateAccount.vue";
 import Login from "../views/Login.vue";
@@ -14,6 +14,7 @@ import Farmer from "../views/Farmer.vue";
 import EventPlanner from "../views/EventPlanner.vue";
 import Storage from "../views/Storage.vue";
 import Chef from "../views/Chef.vue";
+import store from "../store";
 
 Vue.use(VueRouter);
 
@@ -46,47 +47,110 @@ const routes = [
   {
     path: "/town",
     name: "town",
-    component: Town
+    component: Town,
+    beforeEnter: (to: Route, from: Route, next: Function) => {
+      if (!store.getters["characters/selectedCharacter"]) {
+        next("/select-character");
+      } else {
+        next();
+      }
+    }
   },
   {
     path: "/blacksmith",
     name: "Blacksmith",
-    component: Blacksmith
+    component: Blacksmith,
+    beforeEnter: (to: Route, from: Route, next: Function) => {
+      if (!store.getters["characters/selectedCharacter"]) {
+        next("/select-character");
+      } else {
+        next();
+      }
+    }
   },
   {
     path: "/appleosouras",
     name: "Appleosouras",
-    component: Appleosouras
+    component: Appleosouras,
+    beforeEnter: (to: Route, from: Route, next: Function) => {
+      if (!store.getters["characters/selectedCharacter"]) {
+        next("/select-character");
+      } else {
+        next();
+      }
+    }
   },
   {
     path: "/event-planner",
     name: "EventPlanner",
-    component: EventPlanner
+    component: EventPlanner,
+    beforeEnter: (to: Route, from: Route, next: Function) => {
+      if (!store.getters["characters/selectedCharacter"]) {
+        next("/select-character");
+      } else {
+        next();
+      }
+    }
   },
   {
     path: "/chef",
     name: "Chef",
-    component: Chef
+    component: Chef,
+    beforeEnter: (to: Route, from: Route, next: Function) => {
+      if (!store.getters["characters/selectedCharacter"]) {
+        next("/select-character");
+      } else {
+        next();
+      }
+    }
   },
   {
     path: "/storage",
     name: "Storage",
-    component: Storage
+    component: Storage,
+    beforeEnter: (to: Route, from: Route, next: Function) => {
+      if (!store.getters["characters/selectedCharacter"]) {
+        next("/select-character");
+      } else {
+        next();
+      }
+    }
   },
   {
     path: "/farm",
     name: "farm",
-    component: Farm
+    component: Farm,
+    beforeEnter: (to: Route, from: Route, next: Function) => {
+      if (!store.getters["characters/selectedCharacter"]) {
+        next("/select-character");
+      } else {
+        next();
+      }
+    }
   },
   {
     path: "/farmer",
     name: "farmer",
-    component: Farmer
+    component: Farmer,
+    beforeEnter: (to: Route, from: Route, next: Function) => {
+      if (!store.getters["characters/selectedCharacter"]) {
+        next("/select-character");
+      } else {
+        next();
+      }
+    }
   },
   {
     path: "/plot",
     name: "plot",
-    component: Plot
+    component: Plot,
+    beforeEnter: (to: Route, from: Route, next: Function) => {
+      if (!store.getters["characters/selectedCharacter"]) {
+        next("/select-character");
+      } else {
+        next();
+      }
+    }
   },
   {
     path: "/about",

@@ -5,6 +5,6 @@ export interface Character {
   bag: Bag;
   weaponLevel: number;
   lastRewardDate?: number;
-  seedPlantDate?: number;
-  megaSeedPlantDate?: number;
+  seedReadyDate?: number;
+  megaSeedReadyDate?: number;
 }
