@@ -19,10 +19,12 @@
         >
           Upgrade your weapon
         </button>
+        <div class="back-link">
+          <router-link to="/town">Back to Town</router-link>
+        </div>
       </div>
     </div>
     <div class="image blacksmith"></div>
-    <router-link to="/town">Town</router-link>
   </div>
 </template>
 <style scoped lang="scss">

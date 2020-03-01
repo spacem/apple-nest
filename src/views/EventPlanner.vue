@@ -8,10 +8,12 @@
       <div class="actions">
         <button @click="talk()">Talk</button>
         <button @click="collectReward()">Collect Reward</button>
+        <div class="back-link">
+          <router-link to="/town">Back to Town</router-link>
+        </div>
       </div>
     </div>
     <div class="image eventplanner"></div>
-    <router-link to="/town">Town</router-link>
   </div>
 </template>
 <style scoped lang="scss">

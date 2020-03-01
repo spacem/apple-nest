@@ -12,7 +12,7 @@
       <router-link to="/create-character">Create Character</router-link>
     </div>
     <img :src="coverImage" class="character-list-image" />
-    <router-link to="/login">Log Out</router-link>
+    <!-- <router-link to="/login">Log Out</router-link> -->
   </div>
 </template>
 <style scoped lang="scss">

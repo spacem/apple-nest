@@ -5,11 +5,10 @@
       <router-link to="/farmer">Farmer</router-link>
       |
       <router-link to="/plot">Plot</router-link>
-    </div>
-    <div class="image farm"></div>
-    <div>
+      |
       <router-link to="/town">Town</router-link>
     </div>
+    <div class="image farm"></div>
   </div>
 </template>
 <style scoped lang="scss">

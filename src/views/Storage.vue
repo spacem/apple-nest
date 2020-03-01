@@ -12,10 +12,12 @@
         <button @click="talk()">Talk</button>
         <button @click="tryToStore()">Store Money</button>
         <button @click="tryToTake()">Take Money</button>
+        <div class="back-link">
+          <router-link to="/town">Back to Town</router-link>
+        </div>
       </div>
     </div>
     <div class="image storage"></div>
-    <router-link to="/town">Town</router-link>
   </div>
 </template>
 <style scoped lang="scss">

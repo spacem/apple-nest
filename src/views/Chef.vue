@@ -10,10 +10,12 @@
         <button @click="tryMakPie()">
           Ask For Pie
         </button>
+        <div class="back-link">
+          <router-link to="/town">Back to Town</router-link>
+        </div>
       </div>
     </div>
     <div class="image chef"></div>
-    <router-link to="/town">Town</router-link>
   </div>
 </template>
 <style scoped lang="scss">

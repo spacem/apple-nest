@@ -9,10 +9,12 @@
         <button @click="talk()">Talk</button>
         <button @click="tryToBuySeed()">Buy a Seed</button>
         <button @click="tryToBuyMegaSeed()">Buy a Mega-Seed</button>
+        <div class="back-link">
+          <router-link to="/farm">Back to Farm</router-link>
+        </div>
       </div>
     </div>
     <div class="image farmer"></div>
-    <router-link to="/farm">Farm</router-link>
   </div>
 </template>
 <style scoped lang="scss">

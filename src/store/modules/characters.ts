@@ -210,9 +210,9 @@ const mutations: MutationTree<CharactersState> = {
       } else if (roll > 0.6) {
         numApples = 50;
       } else if (roll > 0.4) {
-        numApples = 20;
+        numApples = 30;
       } else {
-        numApples = 10;
+        numApples = 20;
       }
     } else {
       throw new Error(`No seeds planted`);

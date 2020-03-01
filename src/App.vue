@@ -21,6 +21,9 @@
         <div v-if="selectedCharacter.weaponLevel">
           Weapon Level: {{ selectedCharacter.weaponLevel }}
         </div>
+        <div>
+          <router-link to="/select-character">Switch Character</router-link>
+        </div>
       </div>
       <router-view />
     </div>
@@ -64,18 +67,21 @@
   }
 }
 .image {
+  margin-top: 20px;
   width: 100%;
-  height: 350px;
+  height: 450px;
   background-position: top;
   background-size: contain;
   background-repeat: no-repeat;
 }
 .message {
   height: 50px;
+  padding: 5px;
+  padding-right: 10px;
+  padding-top: 10px;
 }
 .messages {
   background-color: burlywood;
-  padding: 10px;
   padding-left: 20px;
   border: 2px solid;
   border-radius: 50px;
@@ -83,6 +89,10 @@
   margin-top: -20px;
   text-align: left;
   float: right;
+}
+.back-link {
+  text-align: left;
+  padding: 10px;
 }
 .actions {
   text-align: right;

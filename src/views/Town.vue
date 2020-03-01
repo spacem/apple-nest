@@ -15,9 +15,6 @@
       <router-link to="/farm">Farm</router-link>
     </div>
     <div class="image town"></div>
-    <div>
-      <router-link to="/select-character">Switch Character</router-link>
-    </div>
   </div>
 </template>
 <style scoped lang="scss">
