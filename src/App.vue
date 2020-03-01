@@ -6,10 +6,13 @@
         <div v-if="selectedCharacter.bag">
           Money: {{ selectedCharacter.bag.money }}
           <span v-if="selectedCharacter.bag.seeds">
-            | Seeds: {{ selectedCharacter.bag.seeds }}</span
+            | Normal Seeds: {{ selectedCharacter.bag.seeds }}</span
           >
           <span v-if="selectedCharacter.bag.megaSeeds">
             | Mega Seeds: {{ selectedCharacter.bag.megaSeeds }}</span
+          >
+          <span v-if="selectedCharacter.bag.legendarySeeds">
+            | Legendary Seeds: {{ selectedCharacter.bag.legendarySeeds }}</span
           >
           <span v-if="selectedCharacter.bag.apples">
             | Apples: {{ selectedCharacter.bag.apples }}</span
@@ -26,6 +29,9 @@
         </div>
       </div>
       <router-view />
+      <div class="footer">
+        Apple Nest - by spacem
+      </div>
     </div>
   </div>
 </template>
@@ -41,6 +47,7 @@
     border-top-left-radius: 100px;
     border-top-right-radius: 100px;
     padding: 40px;
+    padding-top: 20px;
     display: inline-block;
     width: 600px;
     background: rgb(0, 0, 0);
@@ -51,6 +58,11 @@
       rgba(215, 222, 223, 1) 100%
     );
     height: 100vw;
+  }
+  .footer {
+    color: darkgray;
+    position: absolute;
+    bottom: 0px;
   }
 }
 

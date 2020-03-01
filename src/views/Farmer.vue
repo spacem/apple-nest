@@ -1,14 +1,17 @@
 <template>
   <div>
-    <h1>Farmer</h1>
     <div class="messages">
       <div class="message">
         {{ message }}
       </div>
       <div class="actions">
-        <button @click="talk()">Talk</button>
-        <button @click="tryToBuySeed()">Buy a Seed</button>
-        <button @click="tryToBuyMegaSeed()">Buy a Mega-Seed</button>
+        <button v-if="!buying" @click="talk()">Talk</button>
+        <button v-if="!buying" @click="startToBuy()">Buy a Seed</button>
+        <button v-if="buying" @click="tryToBuySeed()">Normal Seed</button>
+        <button v-if="buying" @click="tryToBuyMegaSeed()">Mega-Seed</button>
+        <button v-if="buying" @click="tryToBuyLegendarySeed()">
+          Legendary-Seed
+        </button>
         <div class="back-link">
           <router-link to="/farm">Back to Farm</router-link>
         </div>
@@ -31,15 +34,21 @@ export default {
   data: () => {
     return {
       message:
-        "Hello I am the farmer. If you had money you could buy seeds from me."
+        "Hello I am the farmer. If you had money you could buy seeds from me.",
+      buying: false
     };
   },
   methods: {
-    ...mapActions("characters", ["buySeed", "buyMegaSeed"]),
+    ...mapActions("characters", ["buySeed", "buyMegaSeed", "buyLegendarySeed"]),
+    startToBuy() {
+      this.buying = true;
+      this.message = "What sort of seed do you want?";
+    },
     tryToBuySeed() {
       try {
         this.buySeed();
         this.message = "Here you go. Have fun farming";
+        this.buying = false;
       } catch (err) {
         this.message = err.message;
       }
@@ -49,6 +58,17 @@ export default {
         this.buyMegaSeed();
         this.message =
           "Those things take a while to grow but it is worth the wait";
+        this.buying = false;
+      } catch (err) {
+        this.message = err.message;
+      }
+    },
+    tryToBuyLegendarySeed() {
+      try {
+        this.buyLegendarySeed();
+        this.message =
+          "You might want to make another character to use while you wait for that to grow.";
+        this.buying = false;
       } catch (err) {
         this.message = err.message;
       }

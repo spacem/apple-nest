@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>Chef</h1>
     <div class="messages">
       <div class="message">
         {{ message }}

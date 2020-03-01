@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>Blacksmith</h1>
     <div class="messages">
       <div class="message">
         {{ message }}

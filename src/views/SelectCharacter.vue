@@ -28,8 +28,6 @@
 .character-button {
   width: 100px;
 }
-.character-list-image {
-}
 </style>
 <script>
 import { Component, Prop, Vue } from "vue-property-decorator";

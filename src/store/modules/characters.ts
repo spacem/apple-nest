@@ -7,6 +7,7 @@ const REWARD_TIME = 60 * 60;
 const WEAPON_COST = 50;
 const SEED_GROW_TIME = 1000 * 60;
 const MEGA_SEED_GROW_TIME = 1000 * 600;
+const LEGENDARY_SEED_GROW_TIME = 1000 * 60 * 60;
 
 // initial state
 const state: CharactersState = {
@@ -57,78 +58,62 @@ const actions: ActionTree<CharactersState, RootState> = {
     commit("select", character);
   },
   collectEventReward({ commit, getters }) {
-    if (getters.selectedCharacterIndex == -1) {
-      throw new Error(`No character selected`);
-    }
+    assertCharacter(getters.selectedCharacter);
     commit("collectEventReward", getters.selectedCharacterIndex);
   },
   buySeed({ commit, getters }) {
     commit("buySeed", getters.selectedCharacterIndex);
   },
   buyMegaSeed({ commit, getters }) {
-    if (getters.selectedCharacterIndex == -1) {
-      throw new Error(`No character selected`);
-    }
+    assertCharacter(getters.selectedCharacter);
     commit("buyMegaSeed", getters.selectedCharacterIndex);
   },
+  buyLegendarySeed({ commit, getters }) {
+    assertCharacter(getters.selectedCharacter);
+    commit("buyLegendarySeed", getters.selectedCharacterIndex);
+  },
   harvest({ commit, getters }) {
-    if (getters.selectedCharacterIndex == -1) {
-      throw new Error(`No character selected`);
-    }
+    assertCharacter(getters.selectedCharacter);
     commit("harvest", getters.selectedCharacterIndex);
   },
   plantSeed({ commit, getters }) {
-    if (getters.selectedCharacterIndex == -1) {
-      throw new Error(`No character selected`);
-    }
+    assertCharacter(getters.selectedCharacter);
     commit("plantSeed", getters.selectedCharacterIndex);
   },
   plantMegaSeed({ commit, getters }) {
-    if (getters.selectedCharacterIndex == -1) {
-      throw new Error(`No character selected`);
-    }
+    assertCharacter(getters.selectedCharacter);
     commit("plantMegaSeed", getters.selectedCharacterIndex);
   },
+  plantLegendarySeed({ commit, getters }) {
+    assertCharacter(getters.selectedCharacter);
+    commit("plantLegendarySeed", getters.selectedCharacterIndex);
+  },
   sellApple({ commit, getters }) {
-    if (getters.selectedCharacterIndex == -1) {
-      throw new Error(`No character selected`);
-    }
+    assertCharacter(getters.selectedCharacter);
     commit("sellApple", getters.selectedCharacterIndex);
   },
   sellPie({ commit, getters }) {
-    if (getters.selectedCharacterIndex == -1) {
-      throw new Error(`No character selected`);
-    }
+    assertCharacter(getters.selectedCharacter);
     commit("sellPie", getters.selectedCharacterIndex);
   },
   storeMoney({ commit, getters }) {
-    if (getters.selectedCharacterIndex == -1) {
-      throw new Error(`No character selected`);
-    }
+    assertCharacter(getters.selectedCharacter);
     commit("storeMoney", getters.selectedCharacterIndex);
   },
   takeMoney({ commit, getters }) {
-    if (getters.selectedCharacterIndex == -1) {
-      throw new Error(`No character selected`);
-    }
+    assertCharacter(getters.selectedCharacter);
     commit("takeMoney", getters.selectedCharacterIndex);
   },
   makeWeapon({ commit, getters }) {
-    if (getters.selectedCharacterIndex == -1) {
-      throw new Error(`No character selected`);
-    }
+    assertCharacter(getters.selectedCharacter);
     commit("makeWeapon", getters.selectedCharacterIndex);
   },
   upgradeWeapon({ commit, getters }) {
-    if (getters.selectedCharacterIndex == -1) {
-      throw new Error(`No character selected`);
-    }
+    assertCharacter(getters.selectedCharacter);
     commit("upgradeWeapon", getters.selectedCharacterIndex);
   },
   makePie({ commit, getters }) {
-    if (getters.selectedCharacterIndex == -1) {
-      throw new Error(`No character selected`);
-    }
+    assertCharacter(getters.selectedCharacter);
     commit("makePie", getters.selectedCharacterIndex);
   }
 };
@@ -185,6 +170,17 @@ const mutations: MutationTree<CharactersState> = {
       }
     }
   },
+  buyLegendarySeed(state, index) {
+    const character = state.characters[index];
+    if (character) {
+      if (character.bag.money >= 50) {
+        character.bag.money -= 50;
+        character.bag.legendarySeeds++;
+      } else {
+        throw new Error(`Legendary seeds cost 100. You need more money`);
+      }
+    }
+  },
   harvest(state, index) {
     const character = state.characters[index];
     let numApples = 0;
@@ -207,12 +203,25 @@ const mutations: MutationTree<CharactersState> = {
         numApples = 100;
       } else if (roll > 0.85) {
         numApples = 60;
-      } else if (roll > 0.6) {
-        numApples = 50;
       } else if (roll > 0.4) {
-        numApples = 30;
+        numApples = 40;
       } else {
         numApples = 20;
+      }
+    } else if (character.legendarySeedReadyDate) {
+      if (character.legendarySeedReadyDate > new Date().valueOf()) {
+        throw new Error("Cannot harvest - not ready yet");
+      }
+      character.legendarySeedReadyDate = undefined;
+      let roll = Math.random();
+      if (roll > 0.95) {
+        numApples = 1000;
+      } else if (roll > 0.85) {
+        numApples = 600;
+      } else if (roll > 0.4) {
+        numApples = 400;
+      } else {
+        numApples = 200;
       }
     } else {
       throw new Error(`No seeds planted`);
@@ -228,6 +237,12 @@ const mutations: MutationTree<CharactersState> = {
     const character = state.characters[index];
     character.megaSeedReadyDate = new Date().valueOf() + MEGA_SEED_GROW_TIME;
     character.bag.megaSeeds--;
+  },
+  plantLegendarySeed(state, index) {
+    const character = state.characters[index];
+    character.legendarySeedReadyDate =
+      new Date().valueOf() + LEGENDARY_SEED_GROW_TIME;
+    character.bag.legendarySeeds--;
   },
   sellApple(state, index) {
     const character = state.characters[index];
@@ -311,6 +326,7 @@ function initBag(character: Character) {
       money: 0,
       seeds: 0,
       megaSeeds: 0,
+      legendarySeeds: 0,
       pies: 0
     };
   } else {
@@ -320,6 +336,15 @@ function initBag(character: Character) {
     if (!character.bag.pies) {
       character.bag.pies = 0;
     }
+    if (!character.bag.legendarySeeds) {
+      character.bag.legendarySeeds = 0;
+    }
+  }
+}
+
+function assertCharacter(selectedCharacter: any) {
+  if (!selectedCharacter) {
+    throw new Error(`No character selected`);
   }
 }
 

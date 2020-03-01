@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!moving">
     <h1>Town</h1>
     <div>
       <router-link to="/event-planner">Event Planner</router-link>
@@ -12,22 +12,44 @@
       |
       <router-link to="/storage">Storage</router-link>
       |
-      <router-link to="/farm">Farm</router-link>
+      <a href="#" @click="moveToFarm()">Farm</a>
     </div>
     <div class="image town"></div>
+  </div>
+  <div v-else>
+    <h1>...</h1>
+    Moving to the Farm
+    <div class="image travel"></div>
   </div>
 </template>
 <style scoped lang="scss">
 .town {
   background-image: url("~@/assets/Town.jpg");
 }
+.travel {
+  background-image: url("~@/assets/Loading.jpg");
+  margin-top: 20px;
+  width: 100%;
+  height: 450px;
+  background-size: contain;
+}
 </style>
 <script>
-import { mapGetters, mapActions } from "vuex";
+import router from "../router";
 
 export default {
-  computed: {
-    ...mapGetters("characters", ["selectedCharacter"])
+  data: () => {
+    return {
+      moving: false
+    };
+  },
+  methods: {
+    moveToFarm() {
+      this.moving = true;
+      setTimeout(() => {
+        router.push("/farm");
+      }, 2000);
+    }
   }
 };
 </script>

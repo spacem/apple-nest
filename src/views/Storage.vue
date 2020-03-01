@@ -1,7 +1,6 @@
 <template>
   <div>
     <h1>
-      Storage<br />
       <small> {{ storage }} money in storage </small>
     </h1>
     <div class="messages">

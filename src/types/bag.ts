@@ -3,5 +3,6 @@ export interface Bag {
   apples: number;
   seeds: number;
   megaSeeds: number;
+  legendarySeeds: number;
   pies: number;
 }

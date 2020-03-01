@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>Appleosouras</h1>
     <div class="messages">
       <div class="message">
         {{ message }}

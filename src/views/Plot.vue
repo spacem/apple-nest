@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>Plot</h1>
     <div v-if="selectedCharacter" class="messages">
       <div class="message">{{ message }}</div>
       <div class="actions">
@@ -21,6 +20,12 @@
           @click="tryPlantMegaSeed()"
         >
           Plant Mega Seed
+        </button>
+        <button
+          v-if="selectedCharacter.bag.legendarySeeds && !getAnySeedReadyDate()"
+          @click="tryPlantLegendarySeed()"
+        >
+          Plant Legendary Seed
         </button>
         <div class="back-link">
           <router-link to="/farm">Back to Farm</router-link>
@@ -50,7 +55,12 @@ export default {
     ...mapGetters("characters", ["selectedCharacter"])
   },
   methods: {
-    ...mapActions("characters", ["harvest", "plantSeed", "plantMegaSeed"]),
+    ...mapActions("characters", [
+      "harvest",
+      "plantSeed",
+      "plantMegaSeed",
+      "plantLegendarySeed"
+    ]),
     getTime() {
       if (this.growSeconds != null) {
         return Math.ceil(this.growSeconds / 60);
@@ -66,12 +76,14 @@ export default {
     },
     tryPlantSeed() {
       this.plantSeed();
-      this.message = "Now you just have to wait.. it won't take long!";
       this.maybeStartTimer();
     },
     tryPlantMegaSeed() {
       this.plantMegaSeed();
-      this.message = "Now you just have to wait.. a long time...";
+      this.maybeStartTimer();
+    },
+    tryPlantLegendarySeed() {
+      this.plantLegendarySeed();
       this.maybeStartTimer();
     },
     tryHarvest() {
@@ -96,6 +108,8 @@ export default {
         return character.seedReadyDate;
       } else if (character.megaSeedReadyDate != null) {
         return character.megaSeedReadyDate;
+      } else if (character.legendarySeedReadyDate != null) {
+        return character.legendarySeedReadyDate;
       }
     },
     setGrowSeconds() {

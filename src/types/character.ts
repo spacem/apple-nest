@@ -7,4 +7,5 @@ export interface Character {
   lastRewardDate?: number;
   seedReadyDate?: number;
   megaSeedReadyDate?: number;
+  legendarySeedReadyDate?: number;
 }
