@@ -242,7 +242,7 @@ const mutations: MutationTree<CharactersState> = {
     const character = state.characters[index];
     if (character.bag.pies > 0) {
       character.bag.pies--;
-      character.bag.money += 500;
+      character.bag.money += 1000;
     } else {
       throw new Error(`Not enough pies. You should try cooking some.`);
     }
