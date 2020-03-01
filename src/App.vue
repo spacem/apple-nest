@@ -83,9 +83,11 @@
 .messages {
   background-color: burlywood;
   padding-left: 20px;
+  padding-right: 20px;
   border: 2px solid;
   border-radius: 50px;
-  margin-left: 55%;
+  margin-left: 360px;
+  margin-right: -70px;
   margin-top: -20px;
   text-align: left;
   float: right;
