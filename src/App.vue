@@ -1,9 +1,15 @@
 <template>
   <div id="app">
+    <div class="background"></div>
     <div class="game">
-      <div v-if="selectedCharacter">
-        Using character: {{ selectedCharacter.name }}
-        <div v-if="selectedCharacter.bag">
+      <div v-if="selectedCharacter" class="characterDetail cool-links">
+        <div class="character-name">
+          Character: {{ selectedCharacter.name }}
+          <div class="switch">
+            <router-link to="/select-character">Switch Character</router-link>
+          </div>
+        </div>
+        <div v-if="selectedCharacter.bag" class="bag">
           Money: {{ selectedCharacter.bag.money }}
           <span v-if="selectedCharacter.bag.seeds">
             | Normal Seeds: {{ selectedCharacter.bag.seeds }}</span
@@ -21,48 +27,121 @@
             | Pies: {{ selectedCharacter.bag.pies }}</span
           >
         </div>
-        <div v-if="selectedCharacter.weaponLevel">
-          Weapon Level: {{ selectedCharacter.weaponLevel }}
-        </div>
         <div>
-          <router-link to="/select-character">Switch Character</router-link>
+          <span v-if="selectedCharacter.weaponLevel"
+            >Weapon Level: {{ selectedCharacter.weaponLevel }}</span
+          >
+          <span
+            v-if="
+              selectedCharacter.weaponLevel && selectedCharacter.armourLevel
+            "
+          >
+            |
+          </span>
+          <span v-if="selectedCharacter.armourLevel"
+            >Armour Level: {{ selectedCharacter.armourLevel }}</span
+          >
         </div>
       </div>
       <router-view />
-      <div class="footer">
-        Apple Nest - by spacem
-      </div>
+      <div class="footer">Apple Nest - by spacem</div>
     </div>
   </div>
 </template>
 <style lang="scss">
+body {
+  font-size: large;
+  margin: 0px;
+}
+button {
+  font-size: large;
+  padding: 0.2em;
+  padding-left: 1em;
+  padding-right: 1em;
+  margin-right: 0.4em;
+  border-radius: 0.3em;
+}
+input {
+  font-size: larger;
+}
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  height: 100%;
+  position: absolute;
+  margin: auto;
+  width: 100%;
+  .background {
+    background: url("~@/assets/Background.jpg");
+    opacity: 0.9;
+    top: -100px;
+    left: 0;
+    right: 0;
+    bottom: -100px;
+    position: fixed;
+    z-index: -999;
+    -webkit-filter: blur(2px);
+    filter: blur(2px);
+  }
+  .characterDetail {
+    text-align: right;
+    padding: 5px;
+    background: black;
+    opacity: 0.6;
+    border-radius: 10px;
+    border: solid 1px grey;
+    color: green;
+    min-height: 3.5em;
+    .character-name {
+      text-align: center;
+      float: left;
+    }
+  }
   .game {
-    border: solid grey;
-    border-top-left-radius: 100px;
-    border-top-right-radius: 100px;
-    padding: 40px;
-    padding-top: 20px;
+    border-left: solid grey 5px;
+    border-right: solid grey 5px;
     display: inline-block;
-    width: 600px;
+    width: 50%;
+    min-width: 40rem;
     background: rgb(0, 0, 0);
-    background: linear-gradient(
-      354deg,
-      rgba(0, 0, 0, 1) 1%,
-      rgba(66, 77, 24, 1) 35%,
-      rgba(215, 222, 223, 1) 100%
-    );
-    height: 100vw;
+    background: url("~@/assets/Stone.jpg");
+    height: 100%;
   }
   .footer {
     color: darkgray;
-    position: absolute;
+    position: fixed;
     bottom: 0px;
+    background: black;
+    width: 100%;
+    opacity: 0.6;
+    left: 0px;
+  }
+  h1 {
+    color: green;
+    background: black;
+    opacity: 0.6;
+  }
+  .cool-links {
+    a,
+    button {
+      display: inline-block;
+      border: grey 2px solid;
+      padding: 0.3em;
+      padding-left: 0.8em;
+      padding-right: 0.8em;
+      border-radius: 2em;
+      background: black;
+      opacity: 0.9;
+      text-decoration: none;
+      color: grey;
+    }
+    a:hover,
+    button:hover {
+      border-color: white;
+    }
   }
 }
 
@@ -93,12 +172,12 @@
   padding-top: 10px;
 }
 .messages {
-  background-color: burlywood;
+  background-color: #ccbba6;
   padding-left: 20px;
   padding-right: 20px;
   border: 2px solid;
   border-radius: 50px;
-  margin-left: 360px;
+  margin-left: 60%;
   margin-right: -70px;
   margin-top: -20px;
   text-align: left;

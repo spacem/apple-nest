@@ -120,7 +120,7 @@ export default {
           if (this.growSeconds > 60) {
             this.message =
               Math.ceil(this.growSeconds / 60) +
-              " minutes left until ready for harvest";
+              " minutes left until ready for harvest. While you wait you could make another character.";
           } else if (this.growSeconds > 0) {
             this.message =
               Math.ceil(this.growSeconds) +

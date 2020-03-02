@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Select Character</h1>
-    <div class="character-list" v-if="!selecting">
+    <div class="character-list cool-links" v-if="!selecting">
       <div v-for="character in characters" :key="character.name">
         <button class="character-button" @click="selectCharacter(character)">
           {{ character.name }}
@@ -17,7 +17,8 @@
 </template>
 <style scoped lang="scss">
 .character-list {
-  background-color: burlywood;
+  opacity: 0.8;
+  background-color: #462d0d;
   border: solid 5px black;
   border-radius: 20px;
   padding: 15px;
@@ -26,7 +27,8 @@
   position: absolute;
 }
 .character-button {
-  width: 100px;
+  width: 12em;
+  margin-bottom: 0.5em;
 }
 </style>
 <script>

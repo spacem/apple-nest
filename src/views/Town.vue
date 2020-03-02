@@ -1,24 +1,21 @@
 <template>
   <div v-if="!moving">
     <h1>Town</h1>
-    <div>
+    <div class="cool-links">
       <router-link to="/event-planner">Event Planner</router-link>
-      |
       <router-link to="/blacksmith">Blacksmith</router-link>
-      |
       <router-link to="/appleosouras">Appleosouras</router-link>
-      |
       <router-link to="/chef">Chef</router-link>
-      |
       <router-link to="/storage">Storage</router-link>
-      |
       <a href="#" @click="moveToFarm()">Farm</a>
     </div>
     <div class="image town"></div>
   </div>
   <div v-else>
-    <h1>...</h1>
-    Moving to the Farm
+    <h1>
+      ...<br />
+      <small>Moving to the Farm</small>
+    </h1>
     <div class="image travel"></div>
   </div>
 </template>

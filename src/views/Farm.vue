@@ -1,18 +1,21 @@
 <template>
   <div v-if="!moving">
     <h1>Farm</h1>
-    <div>
+    <div class="cool-links">
       <router-link to="/farmer">Farmer</router-link>
-      |
       <router-link to="/plot">Plot</router-link>
-      |
       <a href="#" @click="moveToTown()">Town</a>
     </div>
     <div class="image farm"></div>
   </div>
   <div v-else>
-    <h1>...</h1>
-    Moving to Town
+    <h1>
+      ...
+      <br />
+      <small>
+        Moving to Town
+      </small>
+    </h1>
     <div class="image travel"></div>
   </div>
 </template>

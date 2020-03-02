@@ -10,13 +10,25 @@
           @click="tryMakeWeapon()"
           v-if="selectedCharacter && !selectedCharacter.weaponLevel"
         >
-          Make a weapon
+          Make a Weapon
+        </button>
+        <button
+          @click="tryMakeArmour()"
+          v-if="selectedCharacter && !selectedCharacter.armourLevel"
+        >
+          Make Armour
         </button>
         <button
           @click="tryUpgradeWeapon()"
           v-if="selectedCharacter && selectedCharacter.weaponLevel > 0"
         >
-          Upgrade your weapon
+          Upgrade Weapon
+        </button>
+        <button
+          @click="tryUpgradeArmour()"
+          v-if="selectedCharacter && selectedCharacter.armourLevel > 0"
+        >
+          Upgrade Armour
         </button>
         <div class="back-link">
           <router-link to="/town">Back to Town</router-link>
@@ -47,7 +59,12 @@ export default {
     ...mapGetters("characters", ["selectedCharacter"])
   },
   methods: {
-    ...mapActions("characters", ["makeWeapon", "upgradeWeapon"]),
+    ...mapActions("characters", [
+      "makeWeapon",
+      "upgradeWeapon",
+      "makeArmour",
+      "upgradeArmour"
+    ]),
     tryMakeWeapon() {
       try {
         this.makeWeapon();
@@ -74,10 +91,39 @@ export default {
         this.message = err.message;
       }
     },
+    tryMakeArmour() {
+      try {
+        this.makeArmour();
+        this.message =
+          "Here you go... This armour might be useful in the future.";
+      } catch (err) {
+        this.message = err.message;
+      }
+    },
+    tryUpgradeArmour() {
+      try {
+        const previousLevel = this.selectedCharacter.armourLevel;
+        this.upgradeArmour();
+        if (this.selectedCharacter.armourLevel > previousLevel) {
+          this.message =
+            "You are getting stronger. Level " +
+            this.selectedCharacter.armourLevel +
+            " now!";
+        } else if (this.selectedCharacter.armourLevel < previousLevel) {
+          this.message =
+            "Sorry... Your armour actually got weaker. That was very unlucky.";
+        } else {
+          this.message =
+            "Wow unlucky. Nothing happened. Sorry, no refunds. Better luck next time.";
+        }
+      } catch (err) {
+        this.message = err.message;
+      }
+    },
     talk(character) {
       if (this.message === "Do you like weapons? I do.") {
         this.message =
-          "If you have enough money I will be able to make you a weapon.";
+          "If you have enough money I will be able to make you a weapon or some armour.";
       } else {
         this.message = "Do you like weapons? I do.";
       }

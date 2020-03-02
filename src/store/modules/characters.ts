@@ -5,9 +5,13 @@ import { Character } from "@/types/character";
 
 const REWARD_TIME = 60 * 60;
 const WEAPON_COST = 50;
-const SEED_GROW_TIME = 1000 * 60;
+const ARMOUR_COST = 20;
+const SEED_GROW_TIME = 1000 * 45;
 const MEGA_SEED_GROW_TIME = 1000 * 600;
 const LEGENDARY_SEED_GROW_TIME = 1000 * 60 * 60;
+const PIE_COST = 100;
+const MEGA_SEED_COST = 20;
+const LEGENDARY_SEED_COST = 50;
 
 // initial state
 const state: CharactersState = {
@@ -112,6 +116,14 @@ const actions: ActionTree<CharactersState, RootState> = {
     assertCharacter(getters.selectedCharacter);
     commit("upgradeWeapon", getters.selectedCharacterIndex);
   },
+  makeArmour({ commit, getters }) {
+    assertCharacter(getters.selectedCharacter);
+    commit("makeArmour", getters.selectedCharacterIndex);
+  },
+  upgradeArmour({ commit, getters }) {
+    assertCharacter(getters.selectedCharacter);
+    commit("upgradeArmour", getters.selectedCharacterIndex);
+  },
   makePie({ commit, getters }) {
     assertCharacter(getters.selectedCharacter);
     commit("makePie", getters.selectedCharacterIndex);
@@ -155,29 +167,33 @@ const mutations: MutationTree<CharactersState> = {
       character.bag.seeds++;
     } else {
       throw new Error(
-        `Not enough money. Maybe you can take part in the event.`
+        `Not enough money. Maybe you can take part in the event or sell some apples.`
       );
     }
   },
   buyMegaSeed(state, index) {
     const character = state.characters[index];
     if (character) {
-      if (character.bag.money >= 20) {
-        character.bag.money -= 20;
+      if (character.bag.money >= MEGA_SEED_COST) {
+        character.bag.money -= MEGA_SEED_COST;
         character.bag.megaSeeds++;
       } else {
-        throw new Error(`Mega seeds cost 20. You need more money`);
+        throw new Error(
+          `Mega seeds cost ${MEGA_SEED_COST}. You need more money`
+        );
       }
     }
   },
   buyLegendarySeed(state, index) {
     const character = state.characters[index];
     if (character) {
-      if (character.bag.money >= 50) {
-        character.bag.money -= 50;
+      if (character.bag.money >= LEGENDARY_SEED_COST) {
+        character.bag.money -= LEGENDARY_SEED_COST;
         character.bag.legendarySeeds++;
       } else {
-        throw new Error(`Legendary seeds cost 100. You need more money`);
+        throw new Error(
+          `Legendary seeds cost ${LEGENDARY_SEED_COST}. You need more money`
+        );
       }
     }
   },
@@ -308,13 +324,46 @@ const mutations: MutationTree<CharactersState> = {
       }
     }
   },
+  makeArmour(state, index) {
+    const character = state.characters[index];
+    if (!character.armourLevel && character.bag.money >= ARMOUR_COST) {
+      character.armourLevel = 1;
+      character.bag.money -= ARMOUR_COST;
+    } else {
+      throw new Error(
+        "You do not have enough money. Come back when you have " + ARMOUR_COST
+      );
+    }
+  },
+  upgradeArmour(state, index) {
+    const character = state.characters[index];
+    if (character.armourLevel) {
+      const requiredMoney = Math.floor(
+        ARMOUR_COST * 0.5 * character.armourLevel
+      );
+      if (character.bag.money >= requiredMoney) {
+        character.bag.money -= requiredMoney;
+        const roll = Math.random();
+        if (roll > 0.3) {
+          character.armourLevel++;
+        } else if (roll < 0.1) {
+          character.armourLevel--;
+        }
+      } else {
+        throw new Error(
+          "Upgrading is not cheap you know. Come back when you have " +
+            requiredMoney
+        );
+      }
+    }
+  },
   makePie(state, index) {
     const character = state.characters[index];
-    if (character.bag.apples >= 100) {
-      character.bag.apples -= 100;
+    if (character.bag.apples >= PIE_COST) {
+      character.bag.apples -= PIE_COST;
       character.bag.pies++;
     } else {
-      throw new Error("The pie recipe needs 100 apples");
+      throw new Error(`The pie recipe needs ${PIE_COST} apples`);
     }
   }
 };
