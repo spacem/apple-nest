@@ -42,8 +42,8 @@ export default {
       isFinished: false,
       intervalId: undefined,
       showEnemy: false,
-      enemyHp: 100,
-      playerHp: 100,
+      enemyHp: 1000,
+      playerHp: 1000,
       attackIndex: 0,
       attackFactor: 1
     };
@@ -84,23 +84,24 @@ export default {
             setTimeout(() => {
               const roll = Math.random();
               if (roll > 0.8) {
-                const hpLost =
-                  (this.attackFactor * 200) /
-                  this.selectedCharacter.armourLevel;
+                const hpLost = Math.ceil(
+                  (this.attackFactor * 2000) /
+                    this.selectedCharacter.armourLevel
+                );
                 this.playerHp -= hpLost;
                 this.message = `You were attacked with a critical hit and lost ${hpLost} hp.`;
               } else if (roll > 0.5) {
                 const hpLost =
-                  (this.attackFactor * 100) /
+                  (this.attackFactor * 1000) /
                   this.selectedCharacter.armourLevel;
                 this.playerHp -= hpLost;
                 this.message = `You were attacked and lost ${hpLost} hp.`;
               } else if (roll > 0.4) {
-                const hpLost = this.selectedCharacter.weaponLevel * 2;
+                const hpLost = this.selectedCharacter.weaponLevel * 10;
                 this.enemyHp -= hpLost;
                 this.message = `You hit the enemy with a critical hit and dealt ${hpLost} damage.`;
               } else {
-                const hpLost = this.selectedCharacter.weaponLevel;
+                const hpLost = this.selectedCharacter.weaponLevel * 5;
                 this.enemyHp -= hpLost;
                 this.message = `You hit the enemy and dealt ${hpLost} damage.`;
               }
