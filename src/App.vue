@@ -11,36 +11,30 @@
         </div>
         <div v-if="selectedCharacter.bag" class="bag">
           Money: {{ selectedCharacter.bag.money }}
-          <span v-if="selectedCharacter.bag.seeds">
-            | Normal Seeds: {{ selectedCharacter.bag.seeds }}</span
-          >
-          <span v-if="selectedCharacter.bag.megaSeeds">
-            | Mega Seeds: {{ selectedCharacter.bag.megaSeeds }}</span
-          >
-          <span v-if="selectedCharacter.bag.legendarySeeds">
-            | Legendary Seeds: {{ selectedCharacter.bag.legendarySeeds }}</span
-          >
-          <span v-if="selectedCharacter.bag.apples">
-            | Apples: {{ selectedCharacter.bag.apples }}</span
-          >
-          <span v-if="selectedCharacter.bag.pies">
-            | Pies: {{ selectedCharacter.bag.pies }}</span
-          >
+          <span
+            v-if="selectedCharacter.bag.seeds"
+          >| Normal Seeds: {{ selectedCharacter.bag.seeds }}</span>
+          <span
+            v-if="selectedCharacter.bag.megaSeeds"
+          >| Mega Seeds: {{ selectedCharacter.bag.megaSeeds }}</span>
+          <span
+            v-if="selectedCharacter.bag.legendarySeeds"
+          >| Legendary Seeds: {{ selectedCharacter.bag.legendarySeeds }}</span>
+          <span v-if="selectedCharacter.bag.apples">| Apples: {{ selectedCharacter.bag.apples }}</span>
+          <span v-if="selectedCharacter.bag.pies">| Pies: {{ selectedCharacter.bag.pies }}</span>
         </div>
         <div>
-          <span v-if="selectedCharacter.weaponLevel"
-            >Weapon Level: {{ selectedCharacter.weaponLevel }}</span
-          >
+          <span
+            v-if="selectedCharacter.weaponLevel"
+          >Weapon Level: {{ selectedCharacter.weaponLevel }}</span>
           <span
             v-if="
               selectedCharacter.weaponLevel && selectedCharacter.armourLevel
             "
-          >
-            |
-          </span>
-          <span v-if="selectedCharacter.armourLevel"
-            >Armour Level: {{ selectedCharacter.armourLevel }}</span
-          >
+          >|</span>
+          <span
+            v-if="selectedCharacter.armourLevel"
+          >Armour Level: {{ selectedCharacter.armourLevel }}</span>
         </div>
       </div>
       <router-view />
@@ -90,10 +84,8 @@ input {
     text-align: right;
     padding: 5px;
     background: black;
-    opacity: 0.6;
-    border-radius: 10px;
-    border: solid 1px grey;
-    color: green;
+    opacity: 0.8;
+    color: lightslategray;
     min-height: 3.5em;
     .character-name {
       text-align: center;
@@ -101,13 +93,14 @@ input {
     }
   }
   .game {
-    border-left: solid grey 5px;
-    border-right: solid grey 5px;
+    border-left: solid 5px;
+    border-right: solid 5px;
+    border-color: darkolivegreen;
     display: inline-block;
     width: 50%;
-    min-width: 40rem;
+    min-width: 50rem;
     background: rgb(0, 0, 0);
-    background: url("~@/assets/Stone.jpg");
+    background: url("~@/assets/Leaves.jpg");
     height: 100%;
   }
   .footer {
@@ -116,19 +109,20 @@ input {
     bottom: 0px;
     background: black;
     width: 100%;
-    opacity: 0.6;
+    opacity: 0.8;
     left: 0px;
   }
   h1 {
     color: green;
     background: black;
-    opacity: 0.6;
+    opacity: 0.8;
   }
   .cool-links {
     a,
     button {
+      opacity: 0.95;
       display: inline-block;
-      border: grey 2px solid;
+      border: darkgrey 2px solid;
       padding: 0.3em;
       padding-left: 0.8em;
       padding-right: 0.8em;
@@ -178,7 +172,7 @@ input {
   border: 2px solid;
   border-radius: 50px;
   margin-left: 60%;
-  margin-right: -70px;
+  margin-right: -90px;
   margin-top: -20px;
   text-align: left;
   float: right;
