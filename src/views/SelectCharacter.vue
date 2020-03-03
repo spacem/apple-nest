@@ -17,7 +17,6 @@
 </template>
 <style scoped lang="scss">
 .character-list {
-  opacity: 0.8;
   background-color: #462d0d;
   border: solid 5px black;
   border-radius: 20px;
