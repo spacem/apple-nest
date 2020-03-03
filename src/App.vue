@@ -1,48 +1,11 @@
 <template>
   <div id="app">
     <div class="background"></div>
-    <div class="game">
-      <div v-if="selectedCharacter" class="characterDetail cool-links">
-        <div class="character-name">
-          Character: {{ selectedCharacter.name }}
-          <div class="switch">
-            <router-link to="/select-character">Switch Character</router-link>
-          </div>
-        </div>
-        <div v-if="selectedCharacter.bag" class="bag">
-          Money: {{ selectedCharacter.bag.money }}
-          <span v-if="selectedCharacter.bag.seeds"
-            >&nbsp;| Normal Seeds: {{ selectedCharacter.bag.seeds }}</span
-          >
-          <span v-if="selectedCharacter.bag.megaSeeds"
-            >&nbsp;| Mega Seeds: {{ selectedCharacter.bag.megaSeeds }}</span
-          >
-          <span v-if="selectedCharacter.bag.legendarySeeds"
-            >&nbsp;| Legendary Seeds:
-            {{ selectedCharacter.bag.legendarySeeds }}</span
-          >
-          <span v-if="selectedCharacter.bag.apples"
-            >&nbsp;| Apples: {{ selectedCharacter.bag.apples }}</span
-          >
-          <span v-if="selectedCharacter.bag.pies"
-            >&nbsp;| Pies: {{ selectedCharacter.bag.pies }}</span
-          >
-        </div>
-        <div>
-          <span v-if="selectedCharacter.weaponLevel"
-            >Weapon Level: {{ selectedCharacter.weaponLevel }}</span
-          >
-          <span
-            v-if="
-              selectedCharacter.weaponLevel && selectedCharacter.armourLevel
-            "
-            >|</span
-          >
-          <span v-if="selectedCharacter.armourLevel"
-            >Armour Level: {{ selectedCharacter.armourLevel }}</span
-          >
-        </div>
-      </div>
+    <div class="game" v-bind:class="getBackgroundClass()">
+      <CharacterDetail
+        v-bind:selectedCharacter="selectedCharacter"
+        v-if="selectedCharacter"
+      />
       <router-view />
       <div class="footer">Apple Nest - by spacem</div>
     </div>
@@ -86,28 +49,30 @@ input {
     -webkit-filter: blur(2px);
     filter: blur(2px);
   }
-  .characterDetail {
-    text-align: right;
-    padding: 5px;
-    background: black;
-    opacity: 0.8;
-    color: lightslategray;
-    min-height: 3.5em;
-    .character-name {
-      text-align: center;
-      float: left;
-    }
-  }
   .game {
     border-left: solid 5px;
     border-right: solid 5px;
-    border-color: darkolivegreen;
     display: inline-block;
     width: 50%;
     min-width: 50rem;
     background: rgb(0, 0, 0);
-    background: url("~@/assets/Leaves.jpg");
     height: 100%;
+  }
+  .town-background {
+    background: url("~@/assets/Leaves.jpg");
+    border-color: darkolivegreen;
+  }
+  .farm-background {
+    background: url("~@/assets/Dirt.jpg");
+    border-color: dimgray;
+  }
+  .city-background {
+    background: url("~@/assets/Stone.jpg");
+    border-color: grey;
+  }
+  .character-background {
+    background: url("~@/assets/Stone.jpg");
+    border-color: grey;
   }
   .footer {
     color: darkgray;
@@ -195,10 +160,45 @@ input {
 </style>
 <script>
 import { mapGetters, mapActions } from "vuex";
+import CharacterDetail from "@/components/CharacterDetail.vue";
 
 export default {
+  components: {
+    CharacterDetail
+  },
   computed: {
     ...mapGetters("characters", ["selectedCharacter"])
+  },
+  methods: {
+    getBackgroundClass() {
+      return {
+        ["character-background"]: this.isCharacterSelect(),
+        ["town-background"]: this.isTown(),
+        ["city-background"]: this.isCity(),
+        ["farm-background"]: this.isFarm()
+      };
+    },
+    isTown() {
+      return this.$route.path.indexOf("/town") >= 0;
+    },
+    isCharacterSelect() {
+      return (
+        this.$route.path.indexOf("/select-character") >= 0 ||
+        this.$route.path.indexOf("/create-character") >= 0
+      );
+    },
+    isCity() {
+      return (
+        this.$route.path.indexOf("/city") >= 0 ||
+        this.$route.path.indexOf("/city") >= 0
+      );
+    },
+    isFarm() {
+      return (
+        this.$route.path.indexOf("/farm") >= 0 ||
+        this.$route.path.indexOf("/farm") >= 0
+      );
+    }
   }
 };
 </script>

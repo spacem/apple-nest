@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter, { Route } from "vue-router";
-import Home from "../views/Home.vue";
 import CreateAccount from "../views/CreateAccount.vue";
 import Login from "../views/Login.vue";
 import SelectCharacter from "../views/SelectCharacter.vue";
@@ -14,6 +13,9 @@ import Farmer from "../views/Farmer.vue";
 import EventPlanner from "../views/EventPlanner.vue";
 import Storage from "../views/Storage.vue";
 import Chef from "../views/Chef.vue";
+import City from "../views/City.vue";
+import Battle from "../views/Battle.vue";
+import Enemy from "../views/Enemy.vue";
 import store from "../store";
 
 Vue.use(VueRouter);
@@ -57,7 +59,7 @@ const routes = [
     }
   },
   {
-    path: "/blacksmith",
+    path: "/city/blacksmith",
     name: "Blacksmith",
     component: Blacksmith,
     beforeEnter: (to: Route, from: Route, next: Function) => {
@@ -69,7 +71,7 @@ const routes = [
     }
   },
   {
-    path: "/appleosouras",
+    path: "/town/appleosouras",
     name: "Appleosouras",
     component: Appleosouras,
     beforeEnter: (to: Route, from: Route, next: Function) => {
@@ -81,7 +83,7 @@ const routes = [
     }
   },
   {
-    path: "/event-planner",
+    path: "/town/event-planner",
     name: "EventPlanner",
     component: EventPlanner,
     beforeEnter: (to: Route, from: Route, next: Function) => {
@@ -93,7 +95,7 @@ const routes = [
     }
   },
   {
-    path: "/chef",
+    path: "/city/chef",
     name: "Chef",
     component: Chef,
     beforeEnter: (to: Route, from: Route, next: Function) => {
@@ -105,7 +107,7 @@ const routes = [
     }
   },
   {
-    path: "/storage",
+    path: "/town/storage",
     name: "Storage",
     component: Storage,
     beforeEnter: (to: Route, from: Route, next: Function) => {
@@ -129,7 +131,43 @@ const routes = [
     }
   },
   {
-    path: "/farmer",
+    path: "/city",
+    name: "city",
+    component: City,
+    beforeEnter: (to: Route, from: Route, next: Function) => {
+      if (!store.getters["characters/selectedCharacter"]) {
+        next("/select-character");
+      } else {
+        next();
+      }
+    }
+  },
+  {
+    path: "/city/battle",
+    name: "battle",
+    component: Battle,
+    beforeEnter: (to: Route, from: Route, next: Function) => {
+      if (!store.getters["characters/selectedCharacter"]) {
+        next("/select-character");
+      } else {
+        next();
+      }
+    }
+  },
+  {
+    path: "/enemy",
+    name: "enemy",
+    component: Enemy,
+    beforeEnter: (to: Route, from: Route, next: Function) => {
+      if (!store.getters["characters/selectedCharacter"]) {
+        next("/select-character");
+      } else {
+        next();
+      }
+    }
+  },
+  {
+    path: "/farm/farmer",
     name: "farmer",
     component: Farmer,
     beforeEnter: (to: Route, from: Route, next: Function) => {
@@ -141,7 +179,7 @@ const routes = [
     }
   },
   {
-    path: "/plot",
+    path: "/farm/plot",
     name: "plot",
     component: Plot,
     beforeEnter: (to: Route, from: Route, next: Function) => {

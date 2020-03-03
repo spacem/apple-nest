@@ -10,7 +10,7 @@
           Ask For Pie
         </button>
         <div class="back-link">
-          <router-link to="/town">Back to Town</router-link>
+          <router-link to="/city">Back to the City</router-link>
         </div>
       </div>
     </div>

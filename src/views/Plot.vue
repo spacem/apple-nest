@@ -137,7 +137,7 @@ export default {
     maybeStartTimer() {
       this.setGrowSeconds();
       if (this.growSeconds > 0) {
-        setInterval(() => {
+        this.intervalId = setInterval(() => {
           this.setGrowSeconds();
           if (!this.growSeconds) {
             this.stopAnyTimer();

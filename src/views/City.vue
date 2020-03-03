@@ -1,12 +1,13 @@
 <template>
   <div v-if="!moving">
-    <h1>Farm</h1>
+    <h1>City</h1>
     <div class="cool-links">
-      <router-link to="/farm/farmer">Farmer</router-link>
-      <router-link to="/farm/plot">Plot</router-link>
+      <router-link to="/city/chef">Chef</router-link>
+      <router-link to="/city/blacksmith">Blacksmith</router-link>
+      <router-link to="/city/battle">Battle</router-link>
       <a href="#" @click="moveToTown()">Town</a>
     </div>
-    <div class="image farm"></div>
+    <div class="image city"></div>
   </div>
   <div v-else>
     <h1>
@@ -20,11 +21,11 @@
   </div>
 </template>
 <style scoped lang="scss">
-.farm {
-  background-image: url("~@/assets/Farm.jpg");
+.city {
+  background-image: url("~@/assets/City.jpg");
 }
 .travel {
-  background-image: url("~@/assets/Loading.jpg");
+  background-image: url("~@/assets/CityLoading.jpg");
   margin-top: 20px;
   width: 100%;
   height: 450px;
