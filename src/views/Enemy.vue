@@ -91,9 +91,10 @@ export default {
                 this.playerHp -= hpLost;
                 this.message = `You were attacked with a critical hit and lost ${hpLost} hp.`;
               } else if (roll > 0.5) {
-                const hpLost =
+                const hpLost = Math.ceil(
                   (this.attackFactor * 1000) /
-                  this.selectedCharacter.armourLevel;
+                    this.selectedCharacter.armourLevel
+                );
                 this.playerHp -= hpLost;
                 this.message = `You were attacked and lost ${hpLost} hp.`;
               } else if (roll > 0.4) {
