@@ -45,7 +45,7 @@ export default {
       this.moving = true;
       setTimeout(() => {
         router.push("/town");
-      }, 2000);
+      }, 2500);
     }
   }
 };

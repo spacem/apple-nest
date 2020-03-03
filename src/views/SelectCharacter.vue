@@ -53,7 +53,7 @@ export default {
       setTimeout(() => {
         this.select(character);
         router.push("/town");
-      }, 3000);
+      }, 3500);
     }
   },
   created: function() {

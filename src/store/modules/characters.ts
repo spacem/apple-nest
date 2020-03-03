@@ -6,7 +6,7 @@ import { Character } from "@/types/character";
 const REWARD_TIME = 60 * 60;
 const WEAPON_COST = 50;
 const ARMOUR_COST = 20;
-const SEED_GROW_TIME = 1000 * 45;
+const SEED_GROW_TIME = 1000 * 30;
 const MEGA_SEED_GROW_TIME = 1000 * 600;
 const LEGENDARY_SEED_GROW_TIME = 1000 * 60 * 60;
 const PIE_COST = 100;
@@ -216,13 +216,13 @@ const mutations: MutationTree<CharactersState> = {
       character.megaSeedReadyDate = undefined;
       let roll = Math.random();
       if (roll > 0.95) {
-        numApples = 100;
+        numApples = 200;
       } else if (roll > 0.85) {
-        numApples = 60;
+        numApples = 100;
       } else if (roll > 0.4) {
-        numApples = 40;
+        numApples = 60;
       } else {
-        numApples = 20;
+        numApples = 30;
       }
     } else if (character.legendarySeedReadyDate) {
       if (character.legendarySeedReadyDate > new Date().valueOf()) {
@@ -231,13 +231,13 @@ const mutations: MutationTree<CharactersState> = {
       character.legendarySeedReadyDate = undefined;
       let roll = Math.random();
       if (roll > 0.95) {
-        numApples = 1000;
+        numApples = 2000;
       } else if (roll > 0.85) {
-        numApples = 600;
+        numApples = 1000;
       } else if (roll > 0.4) {
-        numApples = 400;
+        numApples = 800;
       } else {
-        numApples = 200;
+        numApples = 500;
       }
     } else {
       throw new Error(`No seeds planted`);
