@@ -11,30 +11,36 @@
         </div>
         <div v-if="selectedCharacter.bag" class="bag">
           Money: {{ selectedCharacter.bag.money }}
-          <span
-            v-if="selectedCharacter.bag.seeds"
-          >| Normal Seeds: {{ selectedCharacter.bag.seeds }}</span>
-          <span
-            v-if="selectedCharacter.bag.megaSeeds"
-          >| Mega Seeds: {{ selectedCharacter.bag.megaSeeds }}</span>
-          <span
-            v-if="selectedCharacter.bag.legendarySeeds"
-          >| Legendary Seeds: {{ selectedCharacter.bag.legendarySeeds }}</span>
-          <span v-if="selectedCharacter.bag.apples">| Apples: {{ selectedCharacter.bag.apples }}</span>
-          <span v-if="selectedCharacter.bag.pies">| Pies: {{ selectedCharacter.bag.pies }}</span>
+          <span v-if="selectedCharacter.bag.seeds"
+            >&nbsp;| Normal Seeds: {{ selectedCharacter.bag.seeds }}</span
+          >
+          <span v-if="selectedCharacter.bag.megaSeeds"
+            >&nbsp;| Mega Seeds: {{ selectedCharacter.bag.megaSeeds }}</span
+          >
+          <span v-if="selectedCharacter.bag.legendarySeeds"
+            >&nbsp;| Legendary Seeds:
+            {{ selectedCharacter.bag.legendarySeeds }}</span
+          >
+          <span v-if="selectedCharacter.bag.apples"
+            >&nbsp;| Apples: {{ selectedCharacter.bag.apples }}</span
+          >
+          <span v-if="selectedCharacter.bag.pies"
+            >&nbsp;| Pies: {{ selectedCharacter.bag.pies }}</span
+          >
         </div>
         <div>
-          <span
-            v-if="selectedCharacter.weaponLevel"
-          >Weapon Level: {{ selectedCharacter.weaponLevel }}</span>
+          <span v-if="selectedCharacter.weaponLevel"
+            >Weapon Level: {{ selectedCharacter.weaponLevel }}</span
+          >
           <span
             v-if="
               selectedCharacter.weaponLevel && selectedCharacter.armourLevel
             "
-          >|</span>
-          <span
-            v-if="selectedCharacter.armourLevel"
-          >Armour Level: {{ selectedCharacter.armourLevel }}</span>
+            >|</span
+          >
+          <span v-if="selectedCharacter.armourLevel"
+            >Armour Level: {{ selectedCharacter.armourLevel }}</span
+          >
         </div>
       </div>
       <router-view />
