@@ -45,7 +45,7 @@ export default {
       playerHp: 1000,
       attackIndex: 0,
       attackFactor: 1,
-      enemyRank: 2,
+      enemyRank: 0,
       enemyHurt: 0
     };
   },
@@ -59,7 +59,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions("characters", ["deafeatEnemy"]),
+    ...mapActions("characters", ["deafeatEnemy", "payForBattle"]),
     talk(character) {
       if (this.message === "Do you like to fight? I do.") {
         this.message =
@@ -82,7 +82,7 @@ export default {
           this.showEnemy = true;
           this.attackFactor++;
           this.message =
-            "The enemy has powered up it's attack making it stronger";
+            "The enemy has powered up. It now does stronger attacks.";
         } else {
           this.showEnemy = !this.showEnemy || this.message;
           if (this.showEnemy) {
@@ -90,32 +90,31 @@ export default {
           } else {
             setTimeout(() => {
               const roll = Math.random();
-              if (roll > 0.8) {
-                // attack player with crit
-                const hpLost = Math.ceil(
-                  (this.attackFactor * this.enemyDps * 2) /
-                    this.selectedCharacter.armourLevel
-                );
-                this.playerHp -= hpLost;
-                this.message = `You were attacked with a critical hit and lost ${hpLost} hp.`;
-              } else if (roll > 0.5) {
+              let critMessage = "";
+              let critFactor = 1;
+
+              if (roll > 0.8 || roll < 0.1) {
+                critFactor++;
+                critMessage = " with a critical hit";
+              }
+
+              if (roll > 0.5) {
                 // attack player
                 const hpLost = Math.ceil(
-                  (this.attackFactor * this.enemyDps) /
+                  (Math.pow(this.attackFactor + 1, 2) *
+                    this.enemyDps *
+                    critFactor) /
                     this.selectedCharacter.armourLevel
                 );
                 this.playerHp -= hpLost;
-                this.message = `You were attacked and lost ${hpLost} hp.`;
-              } else if (roll > 0.4) {
-                // attack enemy with crit
-                const hpLost = this.selectedCharacter.weaponLevel * 10;
-                this.enemyHurt += hpLost;
-                this.message = `You hit the enemy with a critical hit and dealt ${hpLost} damage.`;
+                this.message = `You were attacked${critMessage} and lost ${hpLost} hp.`;
               } else {
                 // attack enemy
-                const hpLost = this.selectedCharacter.weaponLevel * 5;
+                const hpLost = Math.ceil(
+                  this.selectedCharacter.weaponLevel * 5 * critFactor
+                );
                 this.enemyHurt += hpLost;
-                this.message = `You hit the enemy and dealt ${hpLost} damage.`;
+                this.message = `You hit the enemy${critMessage} and dealt ${hpLost} damage.`;
               }
 
               if (this.playerHp <= 0) {
@@ -126,10 +125,10 @@ export default {
               } else if (this.enemyHp <= 0) {
                 this.isFinished = true;
                 const previousMoney = this.selectedCharacter.bag.money;
-                this.deafeatEnemy(1);
+                this.deafeatEnemy(this.enemyRank);
                 const earnings =
                   this.selectedCharacter.bag.money - previousMoney;
-                this.message += ` You have won the battle and earned ${enemyRank} money.`;
+                this.message += ` You have won the battle and earned ${earnings} money.`;
                 this.stopTimer();
               }
             }, 300);
@@ -139,7 +138,14 @@ export default {
     }
   },
   created: function() {
-    this.startTimer();
+    this.enemyRank = Number(this.$route.params.enemyRank);
+    try {
+      this.payForBattle();
+      this.startTimer();
+    } catch (err) {
+      this.message = err.message;
+      this.isFinished = true;
+    }
   },
   destroyed: function() {
     this.stopTimer();

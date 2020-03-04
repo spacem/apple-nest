@@ -5,4 +5,5 @@ export interface Bag {
   megaSeeds: number;
   legendarySeeds: number;
   pies: number;
+  tickets: number;
 }

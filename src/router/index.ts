@@ -155,7 +155,7 @@ const routes = [
     }
   },
   {
-    path: "/enemy",
+    path: "/enemy/:enemyRank",
     name: "enemy",
     component: Enemy,
     beforeEnter: (to: Route, from: Route, next: Function) => {

@@ -3,9 +3,24 @@
     <div class="messages" v-if="!isBattleStarting">
       <div class="message">{{ message }}</div>
       <div class="actions" v-if="!isBattleAlmostStarting">
-        <button @click="talk()">Talk</button>
-        <!-- <button @click="buyTicket()">Buy Ticket</button> -->
-        <button @click="startBattle()">Battle</button>
+        <button v-if="!chooseBattle" @click="talk()">Talk</button>
+        <button v-if="!chooseBattle" @click="tryToBuyTicket()">
+          Buy Ticket
+        </button>
+        <button v-if="!chooseBattle" @click="startChoosingToBattle()">
+          Battle
+        </button>
+        <button v-if="chooseBattle" @click="cancelChoosingToBattle()">
+          None Thanks
+        </button>
+        <button v-if="chooseBattle" @click="startBattle(1)">Easy Battle</button>
+        <button v-if="chooseBattle" @click="startBattle(2)">Hard Battle</button>
+        <button v-if="chooseBattle" @click="startBattle(3)">
+          Very Tough Battle
+        </button>
+        <button v-if="chooseBattle" @click="startBattle(4)">
+          Impossible Battle
+        </button>
         <div class="back-link">
           <router-link to="/city">Back to City</router-link>
         </div>
@@ -29,14 +44,23 @@ export default {
     return {
       message: "You want to battle? I hope you have what it takes",
       isBattleStarting: false,
-      isBattleAlmostStarting: false
+      isBattleAlmostStarting: false,
+      chooseBattle: false
     };
   },
   computed: {
     ...mapGetters("characters", ["selectedCharacter"])
   },
   methods: {
-    ...mapActions("characters", []),
+    ...mapActions("characters", ["buyTicket"]),
+    tryToBuyTicket() {
+      try {
+        this.buyTicket();
+        this.message = "You can use that ticket to enter the battle";
+      } catch (err) {
+        this.message = err;
+      }
+    },
     talk(character) {
       if (this.message === "Do you like to fight? I do.") {
         this.message =
@@ -45,8 +69,7 @@ export default {
         this.message = "Do you like to fight? I do.";
       }
     },
-    buyTicket() {},
-    startBattle() {
+    startBattle(enemyRank) {
       if (this.message === "You need a weapon and armour to fight.") {
         this.message = "Go and talk to the blacksmith";
       } else if (
@@ -55,15 +78,27 @@ export default {
       ) {
         this.message = "You need a weapon and armour to fight.";
       } else {
-        this.message = "Get ready for battle!";
-        this.isBattleAlmostStarting = true;
-        setTimeout(() => {
-          this.isBattleStarting = true;
+        try {
+          this.message = "Get ready for battle!";
+          this.isBattleAlmostStarting = true;
           setTimeout(() => {
-            router.push("/enemy");
-          }, 1000);
-        }, 2000);
+            this.isBattleStarting = true;
+            setTimeout(() => {
+              router.push(`/enemy/${enemyRank}`);
+            }, 1000);
+          }, 2000);
+        } catch (err) {
+          this.message = err.message;
+        }
       }
+    },
+    startChoosingToBattle() {
+      this.message = "Are you strong enough? What sort of battle do you want?";
+      this.chooseBattle = true;
+    },
+    cancelChoosingToBattle() {
+      this.message = "You can battle anytime.. if you have a ticket.";
+      this.chooseBattle = false;
     }
   }
 };

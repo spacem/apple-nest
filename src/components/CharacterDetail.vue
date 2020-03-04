@@ -24,6 +24,9 @@
       <span v-if="selectedCharacter.bag.pies"
         >&nbsp;| Pies: {{ selectedCharacter.bag.pies }}</span
       >
+      <span v-if="selectedCharacter.bag.tickets"
+        >&nbsp;| Tickets: {{ selectedCharacter.bag.tickets }}</span
+      >
     </div>
     <div>
       <span v-if="selectedCharacter.weaponLevel"
