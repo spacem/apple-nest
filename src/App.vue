@@ -183,6 +183,7 @@ export default {
     },
     isCharacterSelect() {
       return (
+        this.$route.path === "/" ||
         this.$route.path.indexOf("/select-character") >= 0 ||
         this.$route.path.indexOf("/create-character") >= 0
       );

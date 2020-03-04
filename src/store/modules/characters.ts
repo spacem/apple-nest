@@ -127,6 +127,13 @@ const actions: ActionTree<CharactersState, RootState> = {
   makePie({ commit, getters }) {
     assertCharacter(getters.selectedCharacter);
     commit("makePie", getters.selectedCharacterIndex);
+  },
+  deafeatEnemy({ commit, getters }, enemyRank: number) {
+    assertCharacter(getters.selectedCharacter);
+    commit("deafeatEnemy", {
+      index: getters.selectedCharacterIndex,
+      enemyRank
+    });
   }
 };
 
@@ -365,6 +372,10 @@ const mutations: MutationTree<CharactersState> = {
     } else {
       throw new Error(`The pie recipe needs ${PIE_COST} apples`);
     }
+  },
+  deafeatEnemy(state, { index, enemyRank }) {
+    const character = state.characters[index];
+    character.bag.money += Math.pow(10, enemyRank);
   }
 };
 
