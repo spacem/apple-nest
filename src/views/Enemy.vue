@@ -71,8 +71,8 @@ export default {
     enemyHp() {
       return (
         Math.ceil(
-          Math.max(0, Math.pow(10, this.enemyRank + 0.5) - this.enemyHurt) / 10
-        ) * 10
+          Math.max(0, Math.pow(10, this.enemyRank + 0.5) - this.enemyHurt) / 100
+        ) * 100
       );
     },
     enemyDps() {
@@ -138,7 +138,7 @@ export default {
               if (roll > 0.5) {
                 // attack player
                 const hpLost = Math.ceil(
-                  (Math.pow(this.attackFactor + 0.5, 2) *
+                  (Math.pow(this.attackFactor + 0.2, 2) *
                     this.enemyDps *
                     critFactor) /
                     this.selectedCharacter.armourLevel
