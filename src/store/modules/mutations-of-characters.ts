@@ -9,9 +9,11 @@ const SEED_GROW_TIME = 1000 * 20;
 const MEGA_SEED_GROW_TIME = 1000 * 600;
 const LEGENDARY_SEED_GROW_TIME = 1000 * 60 * 60;
 const PIE_COST = 100;
+const PIZZA_COST = 10000;
 const MEGA_SEED_COST = 20;
 const LEGENDARY_SEED_COST = 50;
 const TICKET_COST = 5;
+const APPLE_COST = 10;
 
 function initBag(character: Character) {
   if (!character.bag) {
@@ -22,6 +24,7 @@ function initBag(character: Character) {
       megaSeeds: 0,
       legendarySeeds: 0,
       pies: 0,
+      pizzas: 0,
       tickets: 0
     };
   } else {
@@ -30,6 +33,9 @@ function initBag(character: Character) {
     }
     if (!character.bag.pies) {
       character.bag.pies = 0;
+    }
+    if (!character.bag.pizzas) {
+      character.bag.pizzas = 0;
     }
     if (!character.bag.legendarySeeds) {
       character.bag.legendarySeeds = 0;
@@ -126,13 +132,13 @@ export const mutationsOfCharacters: MutationTree<CharactersState> = {
       character.megaSeedReadyDate = undefined;
       let roll = Math.random();
       if (roll > 0.95) {
-        numApples = 200;
+        numApples = 2000;
       } else if (roll > 0.85) {
-        numApples = 100;
+        numApples = 1000;
       } else if (roll > 0.4) {
-        numApples = 60;
+        numApples = 600;
       } else {
-        numApples = 30;
+        numApples = 300;
       }
     } else if (character.legendarySeedReadyDate) {
       if (character.legendarySeedReadyDate > new Date().valueOf()) {
@@ -141,13 +147,13 @@ export const mutationsOfCharacters: MutationTree<CharactersState> = {
       character.legendarySeedReadyDate = undefined;
       let roll = Math.random();
       if (roll > 0.95) {
-        numApples = 2000;
+        numApples = 20000;
       } else if (roll > 0.85) {
-        numApples = 1000;
+        numApples = 10000;
       } else if (roll > 0.4) {
-        numApples = 800;
+        numApples = 8000;
       } else {
-        numApples = 500;
+        numApples = 5000;
       }
     } else {
       throw new Error(`No seeds planted`);
@@ -174,7 +180,7 @@ export const mutationsOfCharacters: MutationTree<CharactersState> = {
     const character = state.characters[index];
     if (character.bag.apples > 0) {
       character.bag.apples--;
-      character.bag.money += 10;
+      character.bag.money += APPLE_COST;
     } else {
       throw new Error(`Not enough apples. You should try growing some.`);
     }
@@ -183,9 +189,18 @@ export const mutationsOfCharacters: MutationTree<CharactersState> = {
     const character = state.characters[index];
     if (character.bag.pies > 0) {
       character.bag.pies--;
-      character.bag.money += 1000;
+      character.bag.money += PIE_COST * APPLE_COST;
     } else {
       throw new Error(`Not enough pies. You should try cooking some.`);
+    }
+  },
+  sellPizza(state, index) {
+    const character = state.characters[index];
+    if (character.bag.pizzas > 0) {
+      character.bag.pizzas--;
+      character.bag.money += PIZZA_COST * APPLE_COST;
+    } else {
+      throw new Error(`Not enough pizzas. You should try cooking some.`);
     }
   },
   storeMoney(state, index) {
@@ -276,9 +291,18 @@ export const mutationsOfCharacters: MutationTree<CharactersState> = {
       throw new Error(`The pie recipe needs ${PIE_COST} apples`);
     }
   },
+  makePizza(state, index) {
+    const character = state.characters[index];
+    if (character.bag.apples >= PIZZA_COST) {
+      character.bag.apples -= PIZZA_COST;
+      character.bag.pizzas++;
+    } else {
+      throw new Error(`The pizza recipe needs ${PIZZA_COST} apples`);
+    }
+  },
   deafeatEnemy(state, { index, enemyRank }) {
     const character = state.characters[index];
-    character.bag.money += Math.pow(10, enemyRank);
+    character.bag.apples += Math.ceil(Math.pow(10, enemyRank) / APPLE_COST);
   },
   buyTicket(state, index) {
     const character = state.characters[index];

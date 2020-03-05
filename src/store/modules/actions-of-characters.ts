@@ -67,6 +67,10 @@ export const actionsOfCharacters: ActionTree<CharactersState, RootState> = {
     assertCharacter(getters.selectedCharacter);
     commit("sellPie", getters.selectedCharacterIndex);
   },
+  sellPizza({ commit, getters }) {
+    assertCharacter(getters.selectedCharacter);
+    commit("sellPizza", getters.selectedCharacterIndex);
+  },
   storeMoney({ commit, getters }) {
     assertCharacter(getters.selectedCharacter);
     commit("storeMoney", getters.selectedCharacterIndex);
@@ -94,6 +98,10 @@ export const actionsOfCharacters: ActionTree<CharactersState, RootState> = {
   makePie({ commit, getters }) {
     assertCharacter(getters.selectedCharacter);
     commit("makePie", getters.selectedCharacterIndex);
+  },
+  makePizza({ commit, getters }) {
+    assertCharacter(getters.selectedCharacter);
+    commit("makePizza", getters.selectedCharacterIndex);
   },
   deafeatEnemy({ commit, getters }, enemyRank: number) {
     assertCharacter(getters.selectedCharacter);

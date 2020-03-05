@@ -5,9 +5,12 @@
         {{ message }}
       </div>
       <div class="actions">
-        <button @click="talk()">Talk</button>
-        <button @click="tryToSellApple()">Feed an Apple</button>
-        <button @click="tryToSellPie()">Feed a Pie</button>
+        <button v-if="!startFeed" @click="talk()">Talk</button>
+        <button v-if="!startFeed" @click="feed()">Feed</button>
+        <button v-if="startFeed" @click="cancelFeed()">Nothing</button>
+        <button v-if="startFeed" @click="tryToSellApple()">Apple</button>
+        <button v-if="startFeed" @click="tryToSellPie()">Pie</button>
+        <button v-if="startFeed" @click="tryToSellPizza()">Pizza</button>
         <div class="back-link">
           <router-link to="/town">Back to Town</router-link>
         </div>
@@ -29,11 +32,20 @@ import router from "../router";
 export default {
   data: () => {
     return {
-      message: "Hello, I am the Appleosouras. I will pay you if you feed me."
+      message: "Hello, I am the Appleosouras. I will pay you if you feed me.",
+      startFeed: false
     };
   },
   methods: {
-    ...mapActions("characters", ["sellApple", "sellPie"]),
+    ...mapActions("characters", ["sellApple", "sellPie", "sellPizza"]),
+    feed() {
+      this.startFeed = true;
+      this.message = "What have you got that I can eat. I will pay you!";
+    },
+    cancelFfeed() {
+      this.startFeed = false;
+      this.message = "Please come back when you have food for me.";
+    },
     tryToSellApple() {
       try {
         this.sellApple();
@@ -45,7 +57,15 @@ export default {
     tryToSellPie() {
       try {
         this.sellPie();
-        this.message = "Pies are my favorite. Here, have some money.";
+        this.message = "I love Pie. Here, have some money.";
+      } catch (err) {
+        this.message = err.message;
+      }
+    },
+    tryToSellPizza() {
+      try {
+        this.sellPizza();
+        this.message = "Pizza is my favorite. Here, have some money.";
       } catch (err) {
         this.message = err.message;
       }
