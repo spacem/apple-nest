@@ -302,7 +302,7 @@ export const mutationsOfCharacters: MutationTree<CharactersState> = {
   },
   deafeatEnemy(state, { index, enemyRank }) {
     const character = state.characters[index];
-    character.bag.apples += Math.ceil(Math.pow(10, enemyRank) / APPLE_COST);
+    character.bag.apples += Math.ceil(Math.pow(4, enemyRank) / APPLE_COST);
   },
   buyTicket(state, index) {
     const character = state.characters[index];
