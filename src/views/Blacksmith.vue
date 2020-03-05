@@ -77,9 +77,15 @@ export default {
     tryUpgradeWeapon() {
       try {
         const previousLevel = this.selectedCharacter.weaponLevel;
+        const previousMoney = this.selectedCharacter.bag.money;
         this.upgradeWeapon();
         if (this.selectedCharacter.weaponLevel > previousLevel) {
-          this.message = "You are getting stronger.";
+          this.message =
+            "You are getting stronger. Level " +
+            this.selectedCharacter.armourLevel +
+            " now! " +
+            (previousMoney - this.selectedCharacter.bag.money) +
+            " well spent";
         } else if (this.selectedCharacter.weaponLevel < previousLevel) {
           this.message =
             "Sorry... Your weapon actually got weaker. That was very unlucky.";
@@ -103,12 +109,15 @@ export default {
     tryUpgradeArmour() {
       try {
         const previousLevel = this.selectedCharacter.armourLevel;
+        const previousMoney = this.selectedCharacter.bag.money;
         this.upgradeArmour();
         if (this.selectedCharacter.armourLevel > previousLevel) {
           this.message =
             "You are getting stronger. Level " +
             this.selectedCharacter.armourLevel +
-            " now!";
+            " now! " +
+            (previousMoney - this.selectedCharacter.bag.money) +
+            " well spent";
         } else if (this.selectedCharacter.armourLevel < previousLevel) {
           this.message =
             "Sorry... Your armour actually got weaker. That was very unlucky.";

@@ -5,7 +5,7 @@ import { Character } from "@/types/character";
 const REWARD_TIME = 60 * 60;
 const WEAPON_COST = 50;
 const ARMOUR_COST = 20;
-const SEED_GROW_TIME = 1000 * 30;
+const SEED_GROW_TIME = 1000 * 20;
 const MEGA_SEED_GROW_TIME = 1000 * 600;
 const LEGENDARY_SEED_GROW_TIME = 1000 * 60 * 60;
 const PIE_COST = 100;
@@ -221,7 +221,7 @@ export const mutationsOfCharacters: MutationTree<CharactersState> = {
       if (character.bag.money >= requiredMoney) {
         character.bag.money -= requiredMoney;
         const roll = Math.random();
-        if (roll > 0.3) {
+        if (character.weaponLevel <= 1 || roll > 0.3) {
           character.weaponLevel++;
         } else if (roll < 0.1) {
           character.weaponLevel--;
@@ -254,7 +254,7 @@ export const mutationsOfCharacters: MutationTree<CharactersState> = {
       if (character.bag.money >= requiredMoney) {
         character.bag.money -= requiredMoney;
         const roll = Math.random();
-        if (roll > 0.3) {
+        if (character.armourLevel <= 1 || roll > 0.3) {
           character.armourLevel++;
         } else if (roll < 0.1) {
           character.armourLevel--;

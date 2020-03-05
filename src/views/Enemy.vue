@@ -69,7 +69,11 @@ export default {
   computed: {
     ...mapGetters("characters", ["selectedCharacter"]),
     enemyHp() {
-      return Math.max(0, Math.pow(10, this.enemyRank + 1) - this.enemyHurt);
+      return (
+        Math.ceil(
+          Math.max(0, Math.pow(10, this.enemyRank + 0.5) - this.enemyHurt) / 10
+        ) * 10
+      );
     },
     enemyDps() {
       return Math.pow(10, this.enemyRank + 1);
