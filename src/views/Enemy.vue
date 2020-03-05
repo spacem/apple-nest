@@ -160,11 +160,11 @@ export default {
                 this.stopTimer();
               } else if (this.enemyHp <= 0) {
                 this.isFinished = true;
-                const previousMoney = this.selectedCharacter.bag.money;
+                const previousApples = this.selectedCharacter.bag.apples;
                 this.deafeatEnemy(this.enemyRank);
                 const earnings =
-                  this.selectedCharacter.bag.money - previousMoney;
-                this.message += ` You have won the battle and earned ${earnings} money.`;
+                  this.selectedCharacter.bag.apples - previousApples;
+                this.message += ` You have won the battle and earned ${earnings} apples.`;
                 this.stopTimer();
               }
             }, 300);
