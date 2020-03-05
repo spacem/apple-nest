@@ -8,7 +8,9 @@
         <button v-if="!buying" @click="talk()">Talk</button>
         <button v-if="!buying" @click="startToBuy()">Buy a Seed</button>
         <button v-if="buying" @click="tryToBuySeed()">Normal Seed</button>
-        <button v-if="buying" @click="tryToBuyMegaSeed()">Mega-Seed</button>
+        <button v-if="buying" @click="tryToBuyMegaSeed()">
+          Mega-Seed
+        </button>
         <button v-if="buying" @click="tryToBuyLegendarySeed()">
           Legendary-Seed
         </button>
@@ -33,8 +35,7 @@ import router from "../router";
 export default {
   data: () => {
     return {
-      message:
-        "Hello I am the farmer. If you had money you could buy seeds from me.",
+      message: "Hello I am the farmer. You can buy seeds from me.",
       buying: false
     };
   },
@@ -57,7 +58,7 @@ export default {
       try {
         this.buyMegaSeed();
         this.message =
-          "Those things take a while to grow but it is worth the wait";
+          "Those things take several minutes to grow but it is worth the wait";
         this.buying = false;
       } catch (err) {
         this.message = err.message;
@@ -67,7 +68,7 @@ export default {
       try {
         this.buyLegendarySeed();
         this.message =
-          "You might want to make another character to use while you wait for that to grow.";
+          "You might want to make another character to use while you wait for that to grow. It will take a whole hour!";
         this.buying = false;
       } catch (err) {
         this.message = err.message;
@@ -75,7 +76,8 @@ export default {
     },
     talk(character) {
       if (this.message === "Do you like apples? I do.") {
-        this.message = "Growing apples can be a lot of fun.";
+        this.message =
+          "You can only plant one type of seed at a time per character... but you can make many characters.";
       } else {
         this.message = "Do you like apples? I do.";
       }

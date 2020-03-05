@@ -9,4 +9,5 @@ export interface Character {
   seedReadyDate?: number;
   megaSeedReadyDate?: number;
   legendarySeedReadyDate?: number;
+  rankBeaten: number;
 }

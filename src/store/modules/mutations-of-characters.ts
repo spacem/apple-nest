@@ -6,12 +6,12 @@ const REWARD_TIME = 60 * 60;
 const WEAPON_COST = 50;
 const ARMOUR_COST = 20;
 const SEED_GROW_TIME = 1000 * 20;
-const MEGA_SEED_GROW_TIME = 1000 * 600;
+const MEGA_SEED_GROW_TIME = 1000 * 300;
 const LEGENDARY_SEED_GROW_TIME = 1000 * 60 * 60;
 const PIE_COST = 100;
-const PIZZA_COST = 10000;
+const PIZZA_COST = 5000;
 const MEGA_SEED_COST = 20;
-const LEGENDARY_SEED_COST = 50;
+const LEGENDARY_SEED_COST = 500;
 const TICKET_COST = 5;
 const APPLE_COST = 10;
 
@@ -67,7 +67,7 @@ export const mutationsOfCharacters: MutationTree<CharactersState> = {
     }
     if (remainingTime <= 0) {
       character.lastRewardDate = new Date().valueOf();
-      character.bag.money += 1;
+      character.bag.money += 2;
     } else {
       throw new Error(
         `${Math.ceil(
@@ -121,9 +121,9 @@ export const mutationsOfCharacters: MutationTree<CharactersState> = {
         throw new Error("Cannot harvest - not ready yet");
       }
       character.seedReadyDate = undefined;
-      numApples = Math.floor(Math.random() * 4);
-      if (numApples == 0) {
-        numApples = 1;
+      numApples = Math.floor(Math.random() * 10);
+      if (numApples < 2) {
+        numApples = 2;
       }
     } else if (character.megaSeedReadyDate) {
       if (character.megaSeedReadyDate > new Date().valueOf()) {
@@ -132,13 +132,13 @@ export const mutationsOfCharacters: MutationTree<CharactersState> = {
       character.megaSeedReadyDate = undefined;
       let roll = Math.random();
       if (roll > 0.95) {
-        numApples = 2000;
+        numApples = 200;
       } else if (roll > 0.85) {
-        numApples = 1000;
+        numApples = 100;
       } else if (roll > 0.4) {
-        numApples = 600;
+        numApples = 80;
       } else {
-        numApples = 300;
+        numApples = 50;
       }
     } else if (character.legendarySeedReadyDate) {
       if (character.legendarySeedReadyDate > new Date().valueOf()) {
@@ -147,13 +147,13 @@ export const mutationsOfCharacters: MutationTree<CharactersState> = {
       character.legendarySeedReadyDate = undefined;
       let roll = Math.random();
       if (roll > 0.95) {
-        numApples = 20000;
-      } else if (roll > 0.85) {
         numApples = 10000;
-      } else if (roll > 0.4) {
+      } else if (roll > 0.85) {
         numApples = 8000;
-      } else {
+      } else if (roll > 0.4) {
         numApples = 5000;
+      } else {
+        numApples = 2000;
       }
     } else {
       throw new Error(`No seeds planted`);
@@ -302,6 +302,9 @@ export const mutationsOfCharacters: MutationTree<CharactersState> = {
   },
   deafeatEnemy(state, { index, enemyRank }) {
     const character = state.characters[index];
+    if (!character.rankBeaten || enemyRank > character.rankBeaten) {
+      character.rankBeaten = enemyRank;
+    }
     character.bag.apples += Math.ceil(Math.pow(8, enemyRank) / APPLE_COST);
   },
   buyTicket(state, index) {

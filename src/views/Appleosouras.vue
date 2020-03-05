@@ -42,7 +42,7 @@ export default {
       this.startFeed = true;
       this.message = "What have you got that I can eat. I will pay you!";
     },
-    cancelFfeed() {
+    cancelFeed() {
       this.startFeed = false;
       this.message = "Please come back when you have food for me.";
     },

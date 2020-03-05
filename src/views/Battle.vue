@@ -16,19 +16,34 @@
         <button v-if="chooseBattle" @click="startBattle(1)">
           Caterpillar
         </button>
-        <button v-if="chooseBattle" @click="startBattle(2)">
+        <button
+          v-if="chooseBattle && selectedCharacter.rankBeaten >= 1"
+          @click="startBattle(2)"
+        >
           Snake
         </button>
-        <button v-if="chooseBattle" @click="startBattle(3)">
+        <button
+          v-if="chooseBattle && selectedCharacter.rankBeaten >= 2"
+          @click="startBattle(3)"
+        >
           Aliens
         </button>
-        <button v-if="chooseBattle" @click="startBattle(4)">
+        <button
+          v-if="chooseBattle && selectedCharacter.rankBeaten >= 3"
+          @click="startBattle(4)"
+        >
           Robot
         </button>
-        <button v-if="chooseBattle" @click="startBattle(5)">
+        <button
+          v-if="chooseBattle && selectedCharacter.rankBeaten >= 4"
+          @click="startBattle(5)"
+        >
           Dragon
         </button>
-        <button v-if="chooseBattle" @click="startBattle(6)">
+        <button
+          v-if="chooseBattle && selectedCharacter.rankBeaten >= 5"
+          @click="startBattle(6)"
+        >
           Demon
         </button>
         <div class="back-link">

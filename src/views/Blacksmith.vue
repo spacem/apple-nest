@@ -20,13 +20,21 @@
         </button>
         <button
           @click="tryUpgradeWeapon()"
-          v-if="selectedCharacter && selectedCharacter.weaponLevel > 0"
+          v-if="
+            selectedCharacter &&
+              selectedCharacter.weaponLevel > 0 &&
+              selectedCharacter.armourLevel > 0
+          "
         >
           Upgrade Weapon
         </button>
         <button
           @click="tryUpgradeArmour()"
-          v-if="selectedCharacter && selectedCharacter.armourLevel > 0"
+          v-if="
+            selectedCharacter &&
+              selectedCharacter.weaponLevel > 0 &&
+              selectedCharacter.armourLevel > 0
+          "
         >
           Upgrade Armour
         </button>
