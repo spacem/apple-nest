@@ -16,15 +16,32 @@
     <div
       v-if="!isFinished"
       class="image enemy"
-      :class="{ ['show-enemy']: showEnemy }"
+      :class="{ ['show-enemy']: showEnemy, [imageClass]: true }"
     ></div>
   </div>
 </template>
 <style scoped lang="scss">
 .enemy {
-  background-image: url("~@/assets/Enemy.jpg");
   opacity: 0;
   transition: opacity 0.8s linear;
+}
+.caterpillar {
+  background-image: url("~@/assets/Caterpillar.jpg");
+}
+.snake {
+  background-image: url("~@/assets/Snake.jpg");
+}
+.aliens {
+  background-image: url("~@/assets/Aliens.jpg");
+}
+.robot {
+  background-image: url("~@/assets/Robot.jpg");
+}
+.dragon {
+  background-image: url("~@/assets/Dragon.jpg");
+}
+.demon {
+  background-image: url("~@/assets/Demon.jpg");
 }
 .show-enemy {
   opacity: 1;
@@ -56,6 +73,22 @@ export default {
     },
     enemyDps() {
       return Math.pow(10, this.enemyRank + 1);
+    },
+    imageClass() {
+      switch (this.enemyRank) {
+        case 1:
+          return "caterpillar";
+        case 2:
+          return "snake";
+        case 3:
+          return "aliens";
+        case 4:
+          return "robot";
+        case 5:
+          return "dragon";
+        default:
+          return "demon";
+      }
     }
   },
   methods: {
@@ -77,7 +110,7 @@ export default {
       this.intervalId = setInterval(() => {
         const powerUpRoll = Math.random();
         this.attackIndex++;
-        if (this.showEnemy && this.attackIndex > 4 && powerUpRoll > 0.5) {
+        if (this.showEnemy && this.attackIndex > 6 && powerUpRoll > 0.5) {
           this.attackIndex = 0;
           this.showEnemy = true;
           this.attackFactor++;
@@ -101,7 +134,7 @@ export default {
               if (roll > 0.5) {
                 // attack player
                 const hpLost = Math.ceil(
-                  (Math.pow(this.attackFactor + 1, 2) *
+                  (Math.pow(this.attackFactor + 0.5, 2) *
                     this.enemyDps *
                     critFactor) /
                     this.selectedCharacter.armourLevel
@@ -111,7 +144,7 @@ export default {
               } else {
                 // attack enemy
                 const hpLost = Math.ceil(
-                  this.selectedCharacter.weaponLevel * 5 * critFactor
+                  this.selectedCharacter.weaponLevel * 10 * critFactor
                 );
                 this.enemyHurt += hpLost;
                 this.message = `You hit the enemy${critMessage} and dealt ${hpLost} damage.`;

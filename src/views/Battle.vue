@@ -13,13 +13,23 @@
         <button v-if="chooseBattle" @click="cancelChoosingToBattle()">
           None Thanks
         </button>
-        <button v-if="chooseBattle" @click="startBattle(1)">Easy Battle</button>
-        <button v-if="chooseBattle" @click="startBattle(2)">Hard Battle</button>
+        <button v-if="chooseBattle" @click="startBattle(1)">
+          Caterpillar
+        </button>
+        <button v-if="chooseBattle" @click="startBattle(2)">
+          Snake
+        </button>
         <button v-if="chooseBattle" @click="startBattle(3)">
-          Very Tough Battle
+          Aliens
         </button>
         <button v-if="chooseBattle" @click="startBattle(4)">
-          Impossible Battle
+          Robot
+        </button>
+        <button v-if="chooseBattle" @click="startBattle(5)">
+          Dragon
+        </button>
+        <button v-if="chooseBattle" @click="startBattle(6)">
+          Demon
         </button>
         <div class="back-link">
           <router-link to="/city">Back to City</router-link>
@@ -93,7 +103,8 @@ export default {
       }
     },
     startChoosingToBattle() {
-      this.message = "Are you strong enough? What sort of battle do you want?";
+      this.message =
+        "Are you strong enough? What creature do you want to battle?";
       this.chooseBattle = true;
     },
     cancelChoosingToBattle() {
