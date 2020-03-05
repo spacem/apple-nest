@@ -82,7 +82,7 @@ export default {
         if (this.selectedCharacter.weaponLevel > previousLevel) {
           this.message =
             "You are getting stronger. Level " +
-            this.selectedCharacter.armourLevel +
+            this.selectedCharacter.weaponLevel +
             " now! " +
             (previousMoney - this.selectedCharacter.bag.money) +
             " well spent";
