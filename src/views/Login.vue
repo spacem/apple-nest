@@ -1,13 +1,26 @@
 <template>
-  <div>
-    <h1>Login</h1>
+  <div class="cool-links">
+    <img :src="coverImage" />
     <div>
-      <input placeholder="username" />
+      <router-link to="/select-character">Login</router-link>
     </div>
-    <div>
-      <input placeholder="password" />
-    </div>
-    <router-link to="/">Cancel</router-link> |
-    <router-link to="/select-character">Login</router-link>
   </div>
 </template>
+<script>
+import { mapActions } from "vuex";
+
+export default {
+  data: () => {
+    return {
+      selecting: false,
+      coverImage: require("../assets/AppleNest.jpg")
+    };
+  },
+  methods: {
+    ...mapActions("characters", ["select"])
+  },
+  created: function() {
+    this.select(undefined);
+  }
+};
+</script>

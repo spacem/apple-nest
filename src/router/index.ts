@@ -24,7 +24,7 @@ const routes = [
   {
     path: "/",
     name: "home",
-    component: SelectCharacter
+    component: Login
   },
   {
     path: "/create-account",

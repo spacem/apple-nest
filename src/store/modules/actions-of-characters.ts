@@ -117,5 +117,9 @@ export const actionsOfCharacters: ActionTree<CharactersState, RootState> = {
   payForBattle({ commit, getters }) {
     assertCharacter(getters.selectedCharacter);
     commit("payForBattle", getters.selectedCharacterIndex);
+  },
+  doQuest({ commit, getters }) {
+    assertCharacter(getters.selectedCharacter);
+    commit("doQuest", getters.selectedCharacterIndex);
   }
 };

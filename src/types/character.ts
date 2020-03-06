@@ -10,4 +10,5 @@ export interface Character {
   megaSeedReadyDate?: number;
   legendarySeedReadyDate?: number;
   rankBeaten: number;
+  questNumber: number;
 }

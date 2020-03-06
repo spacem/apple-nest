@@ -7,7 +7,9 @@
         v-if="selectedCharacter"
       />
       <router-view />
-      <div class="footer">Apple Nest - by spacem</div>
+      <div class="footer">
+        Apple Nest - by <a href="https://spacem.github.io/">spacem</a>
+      </div>
     </div>
   </div>
 </template>
@@ -57,6 +59,10 @@ input {
     min-width: 50rem;
     background: rgb(0, 0, 0);
     height: 100%;
+  }
+  .login-background {
+    background: transparent;
+    border: 0px;
   }
   .town-background {
     background: url("~@/assets/Leaves.jpg");
@@ -172,6 +178,7 @@ export default {
   methods: {
     getBackgroundClass() {
       return {
+        ["login-background"]: this.isLogin(),
         ["character-background"]: this.isCharacterSelect(),
         ["town-background"]: this.isTown(),
         ["city-background"]: this.isCity(),
@@ -181,9 +188,11 @@ export default {
     isTown() {
       return this.$route.path.indexOf("/town") >= 0;
     },
+    isLogin() {
+      return this.$route.path === "/";
+    },
     isCharacterSelect() {
       return (
-        this.$route.path === "/" ||
         this.$route.path.indexOf("/select-character") >= 0 ||
         this.$route.path.indexOf("/create-character") >= 0
       );

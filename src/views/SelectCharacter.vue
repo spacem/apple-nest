@@ -9,10 +9,14 @@
       </div>
       <br />
       <br />
-      <router-link to="/create-character">Create Character</router-link>
+      <div>
+        <router-link to="/create-character">Create Character</router-link>
+      </div>
+      <div>
+        <router-link to="/">Log Out</router-link>
+      </div>
     </div>
     <img :src="coverImage" class="character-list-image" />
-    <!-- <router-link to="/login">Log Out</router-link> -->
   </div>
 </template>
 <style scoped lang="scss">

@@ -323,5 +323,15 @@ export const mutationsOfCharacters: MutationTree<CharactersState> = {
     } else {
       throw new Error(`You need to buy a ticket before you can battle.`);
     }
+  },
+  doQuest(state, index) {
+    const character = state.characters[index];
+    if (character.questNumber) {
+      character.bag.money += Math.pow(2, character.questNumber);
+      character.questNumber++;
+    } else {
+      character.questNumber = 1;
+      character.bag.money += 1;
+    }
   }
 };

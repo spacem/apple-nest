@@ -83,7 +83,7 @@ export default {
         this.buyTicket();
         this.message = "You can use that ticket to enter the battle";
       } catch (err) {
-        this.message = err;
+        this.message = err.message;
       }
     },
     talk(character) {
