@@ -16,7 +16,9 @@
         <router-link to="/">Log Out</router-link>
       </div>
     </div>
-    <img :src="coverImage" class="character-list-image" />
+    <img v-if="!selecting" :src="coverImage" class="character-list-image" />
+    <img v-if="selecting" :src="movingImage" class="character-list-image" />
+    <img v-show="false" :src="movingImage" />
   </div>
 </template>
 <style scoped lang="scss">
@@ -43,7 +45,8 @@ export default {
   data: () => {
     return {
       selecting: false,
-      coverImage: require("../assets/start-screen.jpeg")
+      coverImage: require("../assets/start-screen.jpeg"),
+      movingImage: require("../assets/start-screen.gif")
     };
   },
   computed: {
@@ -53,7 +56,6 @@ export default {
     ...mapActions("characters", ["select"]),
     selectCharacter(character) {
       this.selecting = true;
-      this.coverImage = require("../assets/start-screen.gif");
       setTimeout(() => {
         this.select(character);
         router.push("/town");
