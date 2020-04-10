@@ -61,6 +61,10 @@ export function assertSeedReady(character: Character) {
     if (character.legendarySeedReadyDate > new Date().valueOf()) {
       throw new Error("Cannot harvest - not ready yet");
     }
+  } else if (character.megaSeedReadyDate) {
+    if (character.megaSeedReadyDate > new Date().valueOf()) {
+      throw new Error("Cannot harvest - not ready yet");
+    }
   } else {
     throw new Error(`No seeds planted`);
   }
